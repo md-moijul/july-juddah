@@ -1,8 +1,15 @@
 module.exports = {
   testEnvironment: 'jest-environment-jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^@/components/(.*)$': '<rootDir>/components/$1',
+  transform: {
+    '^.+\.(ts|tsx|js|jsx)$' : ['babel-jest', { presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'] }],
   },
+  moduleNameMapper: {
+    '^@/components/ui/(.*)$' : '<rootDir>/components/ui/$1',
+    '^@/components/(.*)$' : '<rootDir>/src/components/$1',
+    '^@/(.*)$' : '<rootDir>/src/$1',
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(@radix-ui)/)',
+  ],
 };
