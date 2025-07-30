@@ -25,7 +25,7 @@ export default function GeneratePage() {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
-        <Button className="w-full" disabled>
+        <Button className="w-full" disabled={!fullName || !location}>
           Download PDF
         </Button>
       </div>
