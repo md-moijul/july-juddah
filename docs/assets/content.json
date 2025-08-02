@@ -1,0 +1,113 @@
+{
+  "navigation": {
+    "logo_text": "July Smriti",
+    "links": [
+      { "text": "Features", "href": "#features" },
+      { "text": "Premium", "href": "#premium" },
+      { "text": "Disclaimer", "href": "#disclaimer" }
+    ],
+    "cta_button": {
+      "text": "Get Certificate",
+      "href": "/generate"
+    }
+  },
+  "hero_section": {
+    "headline": "A Testament to Your Participation.",
+    "subheadline": "Receive a personalized digital certificate commemorating your role in the July Student Revelation. A timeless memento, crafted instantly.",
+    "cta_button": {
+      "text": "Generate My Certificate",
+      "href": "/generate"
+    },
+    "image": {
+      "src": "example_certificate_image.png",
+      "alt": "An elegant, personalized certificate for the July Student Revelation event."
+    }
+  },
+  "counter_section": {
+    "label": "Join the Movement",
+    "headline": "A Community United.",
+    "counter_value": 12547,
+    "counter_text": "Celebrating with over 12,500 participants who have already claimed their moment."
+  },
+  "features_section": {
+    "headline": "Effortless & Elegant.",
+    "subheadline": "From generation to download, our process is designed for simplicity. Your memory, secured and delivered in moments.",
+    "features": [
+      {
+        "icon": "icon_instant.svg",
+        "title": "Instant Personalization",
+        "description": "Enter your details and instantly preview your unique certificate, crafted in moments."
+      },
+      {
+        "icon": "icon_secure.svg",
+        "title": "Secure & Verified",
+        "description": "Your free digital certificate is just an OTP verification away, ensuring secure and exclusive access."
+      },
+      {
+        "icon": "icon_quality.svg",
+        "title": "Premium Digital Asset",
+        "description": "Receive a high-resolution PDF, perfect for sharing, printing, or adding to your digital portfolio."
+      },
+      {
+        "icon": "icon_keepsake.svg",
+        "title": "Tangible Keepsakes",
+        "description": "Elevate your memory with optional high-quality framed prints and exclusive event merchandise."
+      }
+    ]
+  },
+  "image_banner_section": {
+    "image": {
+      "src": "july_revolution_event_image.jpg",
+      "alt": "A powerful and inspiring image from the July Revolution event."
+    }
+  },
+  "disclaimer_section": {
+    "label": "A Note of Clarity",
+    "headline": "A Token of Remembrance.",
+    "description": "This is not a legal document or certificate to achieve any benefit; it's just memorabilia to showcase your participation.",
+    "cta_button": {
+      "text": "Explore Premium Options",
+      "href": "#premium"
+    }
+  },
+  "premium_items_section": {
+    "id": "premium",
+    "headline": "What You'll Receive on Order.",
+    "subheadline": "For those who want to hold the memory in their hands, our premium package offers a curated collection of commemorative items.",
+    "items": [
+      {
+        "title": "Certificate with Frame",
+        "description": "A professionally printed certificate in an elegant, ready-to-display frame."
+      },
+      {
+        "title": "Exclusive Sticker Pack",
+        "description": "High-quality, durable stickers featuring iconic event branding."
+      },
+      {
+        "title": "Commemorative Fridge Magnet",
+        "description": "A stylish magnet to serve as a daily reminder of your participation."
+      },
+      {
+        "title": "Collector's Cards",
+        "description": "A set of beautifully designed cards, perfect for your desk or collection."
+      }
+    ]
+  },
+  "final_cta_section": {
+    "headline": "Ready to Claim Your Certificate?",
+    "subheadline": "Begin the simple process to generate and download your personalized memento. Your July Smriti awaits.",
+    "cta_button": {
+      "text": "Generate My Certificate Now",
+      "href": "/generate"
+    }
+  },
+  "footer": {
+    "logo_icon": "logo_icon_monochrome.svg",
+    "copyright_text": "© 2025 July Smriti. All Rights Reserved.",
+    "links": [
+      { "text": "Privacy Policy", "href": "/privacy" },
+      { "text": "Terms of Service", "href": "/terms" },
+      { "text": "Contact Support", "href": "mailto:support@julysmriti.com" }
+    ]
+  }
+}
