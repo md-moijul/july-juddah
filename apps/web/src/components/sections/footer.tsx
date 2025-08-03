@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="container mx-auto flex flex-col items-center justify-between border-t border-[var(--border)] py-8 md:flex-row">
+    <footer className="container mx-auto flex flex-col items-center justify-between border-t border-border py-8 md:flex-row">
       <div className="mb-4 flex items-center md:mb-0">
         {content.footer.logo_icon && (
           <Image
@@ -15,7 +15,7 @@ export default function Footer() {
             className="mr-2"
           />
         )}
-        <p className="font-sans text-sm text-[var(--muted-foreground)]">
+        <p className="font-sans text-sm text-muted-foreground">
           {content.footer.copyright_text}
         </p>
       </div>
@@ -25,7 +25,7 @@ export default function Footer() {
             <li key={index}>
               <Link
                 href={link.href}
-                className="font-sans text-sm text-[var(--muted-foreground)] transition-colors hover:text-[var(--primary)]"
+                className="font-sans text-sm text-muted-foreground transition-colors hover:text-primary"
               >
                 {link.text}
               </Link>
