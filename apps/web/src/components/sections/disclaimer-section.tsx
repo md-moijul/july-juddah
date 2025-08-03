@@ -11,7 +11,7 @@ export default function DisclaimerSection() {
   const descriptionStyle = typography.scale.body;
   const labelStyle = typography.scale['sub-text'];
   const buttonBaseStyle = components.button.baseStyle;
-  const buttonPrimaryVariant = components.button.variants.primary;
+  
 
   return (
     <section

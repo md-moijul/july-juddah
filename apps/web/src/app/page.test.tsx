@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import LandingPage from '@/app/page';
+import Image from 'next/image';
 import '@testing-library/jest-dom';
 
 // Mock the style.json import
@@ -65,24 +66,32 @@ jest.mock('@/data/style.json', () => ({
 
 // Mock the ImageBanner component
 jest.mock('@/components/sections/ImageBanner', () => {
-  return ({ className }: { className?: string }) => (
+  const ImageBanner = ({ className }: { className?: string }) => (
     <div data-testid="mock-image-banner" className={className}>
-      <img src="/mock-image.jpg" alt="Mock Image" />
+      <Image src="/mock-image.jpg" alt="Mock Image" width={500} height={300} />
     </div>
   );
+  ImageBanner.displayName = 'ImageBanner';
+  return ImageBanner;
 });
 
 // Mock other section components
 jest.mock('@/components/sections/counter-section', () => {
-  return () => <div data-testid="mock-counter-section">Counter Section</div>;
+  const CounterSection = () => <div data-testid="mock-counter-section">Counter Section</div>;
+  CounterSection.displayName = 'CounterSection';
+  return CounterSection;
 });
 
 jest.mock('@/components/sections/features-section', () => {
-  return () => <div data-testid="mock-features-section">Features Section</div>;
+  const FeaturesSection = () => <div data-testid="mock-features-section">Features Section</div>;
+  FeaturesSection.displayName = 'FeaturesSection';
+  return FeaturesSection;
 });
 
 jest.mock('@/components/sections/hero-section', () => {
-  return () => <div data-testid="mock-hero-section">Hero Section</div>;
+  const HeroSection = () => <div data-testid="mock-hero-section">Hero Section</div>;
+  HeroSection.displayName = 'HeroSection';
+  return HeroSection;
 });
 
 describe('LandingPage', () => {
