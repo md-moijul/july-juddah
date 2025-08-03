@@ -1,81 +1,34 @@
-import content from '@/data/content.json';
-import style from '@/data/style.json';
+import { content } from '@/lib/content';
+
 
 export default function PremiumItemsSection() {
   const { premium_items_section } = content;
-  const { typography, colors, spacing } = style.designSystemProfile.tokens;
-
-  const headlineStyle = typography.scale.h2;
-  const subheadlineStyle = typography.scale.body;
-  const itemTitleStyle = typography.scale.h3;
-  const itemDescriptionStyle = typography.scale.body;
 
   return (
     <section
       id={premium_items_section.id}
-      className="container mx-auto text-center"
-      style={{
-        paddingTop: spacing.layout.sectionPaddingY,
-        paddingBottom: spacing.layout.sectionPaddingY,
-        paddingLeft: spacing.layout.containerPaddingX,
-        paddingRight: spacing.layout.containerPaddingX,
-      }}
-    >
+      aria-labelledby={`${premium_items_section.id}-headline`}
+      className="container mx-auto text-center py-[var(--section-padding-y)] px-[var(--container-padding-x)]">
       <h2
-        style={{
-          fontSize: headlineStyle.fontSize,
-          fontWeight: headlineStyle.fontWeight,
-          fontFamily: typography.family.serif.value,
-          lineHeight: headlineStyle.lineHeight,
-          color: colors.primary.text.value,
-          marginBottom: spacing.scale.md,
-        }}
-      >
+        id={`${premium_items_section.id}-headline`}
+        className="text-[var(--h2-font-size)] font-[var(--h2-font-weight)] font-serif leading-[var(--h2-line-height)] text-[var(--primary-text)] mb-[var(--spacing-md)]">
         {premium_items_section.headline}
       </h2>
       <p
-        className="max-w-3xl mx-auto"
-        style={{
-          fontSize: subheadlineStyle.fontSize,
-          fontWeight: subheadlineStyle.fontWeight,
-          fontFamily: typography.family['sans-serif'].value,
-          lineHeight: subheadlineStyle.lineHeight,
-          color: colors.neutral['medium-gray-text'].value,
-          marginBottom: spacing.scale.lg,
-        }}
-      >
+        className="max-w-3xl mx-auto text-[var(--body-font-size)] font-[var(--body-font-weight)] font-sans leading-[var(--body-line-height)] text-[var(--medium-gray-text)] mb-[var(--spacing-lg)]">
         {premium_items_section.subheadline}
       </p>
 
       <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-        style={{
-          gap: spacing.layout.gridGap,
-        }}
-      >
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[var(--grid-gap)]">
         {premium_items_section.items.map((item, index) => (
           <div key={index} className="text-left">
             <h3
-              style={{
-                fontSize: itemTitleStyle.fontSize,
-                fontWeight: itemTitleStyle.fontWeight,
-                fontFamily: typography.family['sans-serif'].value,
-                lineHeight: itemTitleStyle.lineHeight,
-                color: colors.primary.text.value,
-                marginBottom: spacing.scale.sm,
-              }}
-            >
+              className="text-[var(--h3-font-size)] font-[var(--h3-font-weight)] font-sans leading-[var(--h3-line-height)] text-[var(--primary-text)] mb-[var(--spacing-sm)]">
               {item.title}
             </h3>
             <p
-              style={{
-                fontSize: itemDescriptionStyle.fontSize,
-                fontWeight: itemDescriptionStyle.fontWeight,
-                fontFamily: typography.family['sans-serif'].value,
-                lineHeight: itemDescriptionStyle.lineHeight,
-                color: colors.neutral['medium-gray-text'].value,
-              }}
-            >
+              className="text-[var(--body-font-size)] font-[var(--body-font-weight)] font-sans leading-[var(--body-line-height)] text-[var(--medium-gray-text)]">
               {item.description}
             </p>
           </div>

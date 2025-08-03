@@ -8,6 +8,17 @@ export const content = {
       { text: "Contact Us", href: "/contact" },
     ],
   },
+  premium_items_section: {
+    id: "premium",
+    headline: "Premium Items Headline",
+    subheadline: "Premium Items Subheadline",
+    items: [
+      { title: "Item 1", description: "Description 1" },
+      { title: "Item 2", description: "Description 2" },
+      { title: "Item 3", description: "Description 3" },
+      { title: "Item 4", description: "Description 4" },
+    ],
+  },
   certificate: {
     title: "Certificate of Achievement",
     subtitle: "This certifies that",
