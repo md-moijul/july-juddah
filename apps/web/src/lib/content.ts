@@ -23,4 +23,30 @@ export const content = {
       href: "#premium",
     },
   },
+  features_section: {
+    headline: "Effortless & Elegant.",
+    subheadline: "From generation to download, our process is designed for simplicity. Your memory, secured and delivered in moments.",
+    features: [
+      {
+        icon: "icon_instant.svg",
+        title: "Instant Personalization",
+        description: "Enter your details and instantly preview your unique certificate, crafted in moments.",
+      },
+      {
+        icon: "icon_secure.svg",
+        title: "Secure & Verified",
+        description: "Your free digital certificate is just an OTP verification away, ensuring secure and exclusive access.",
+      },
+      {
+        icon: "icon_quality.svg",
+        title: "Premium Digital Asset",
+        description: "Receive a high-resolution PDF, perfect for sharing, printing, or adding to your digital portfolio.",
+      },
+      {
+        icon: "icon_keepsake.svg",
+        title: "Tangible Keepsakes",
+        description: "Elevate your memory with optional high-quality framed prints and exclusive event merchandise.",
+      },
+    ],
+  },
 };

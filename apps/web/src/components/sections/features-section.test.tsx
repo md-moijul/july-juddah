@@ -1,7 +1,7 @@
 
 import { render, screen } from '@testing-library/react';
 import FeaturesSection from './features-section';
-import content from '../../data/content.json';
+import { content } from '@/lib/content';
 import { ImageProps } from 'next/image';
 
 // Mock next/image
