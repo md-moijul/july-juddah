@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import FinalCtaSection from '@/components/sections/final-cta-section';
-import content from '@/data/content.json';
+import { content } from '@/lib/content';
 
 describe('FinalCtaSection', () => {
   it('renders the final CTA content correctly', () => {

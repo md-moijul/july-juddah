@@ -49,4 +49,12 @@ export const content = {
       },
     ],
   },
+  final_cta_section: {
+    headline: "Ready to Claim Your Certificate?",
+    subheadline: "Begin the simple process to generate and download your personalized memento. Your July Smriti awaits.",
+    cta_button: {
+      text: "Generate My Certificate Now",
+      href: "/generate",
+    },
+  },
 };
