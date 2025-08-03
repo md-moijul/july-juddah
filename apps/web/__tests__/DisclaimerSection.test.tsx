@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import DisclaimerSection from '@/components/sections/disclaimer-section';
-import content from '@/data/content.json';
+import { content } from '@/lib/content';
 
 describe('DisclaimerSection', () => {
   it('renders the disclaimer content correctly', () => {

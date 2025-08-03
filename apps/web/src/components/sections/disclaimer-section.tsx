@@ -1,81 +1,33 @@
-import content from '@/data/content.json';
-import style from '@/data/style.json';
+import { content } from '@/lib/content';
 import { Button } from '@/components/ui/button';
 
 export default function DisclaimerSection() {
-  const { disclaimer_section } = content;
-  const { typography, colors, spacing } = style.designSystemProfile.tokens;
-  const { components } = style.designSystemProfile;
-
-  const headlineStyle = typography.scale.h2;
-  const descriptionStyle = typography.scale.body;
-  const labelStyle = typography.scale['sub-text'];
-  const buttonBaseStyle = components.button.baseStyle;
-  
-
   return (
     <section
       id="disclaimer"
-      className="container mx-auto text-center"
-      style={{
-        paddingTop: spacing.layout.sectionPaddingY,
-        paddingBottom: spacing.layout.sectionPaddingY,
-        paddingLeft: spacing.layout.containerPaddingX,
-        paddingRight: spacing.layout.containerPaddingX,
-      }}
+      className="container mx-auto text-center py-16 md:py-32"
     >
       <p
-        className="uppercase"
-        style={{
-          fontSize: labelStyle.fontSize,
-          fontWeight: labelStyle.fontWeight,
-          fontFamily: typography.family['sans-serif'].value,
-          color: colors.accent['subtle-green-text'].value,
-          marginBottom: spacing.scale.sm,
-        }}
+        className="uppercase text-sm font-normal mb-2 text-accent-foreground"
       >
-        {disclaimer_section.label}
+        {content.disclaimer_section.label}
       </p>
       <h2
-        style={{
-          fontSize: headlineStyle.fontSize,
-          fontWeight: headlineStyle.fontWeight,
-          fontFamily: typography.family.serif.value,
-          lineHeight: headlineStyle.lineHeight,
-          color: colors.primary.text.value,
-          marginBottom: spacing.scale.md,
-        }}
+        className="font-serif text-4xl md:text-6xl font-normal mb-6 text-foreground"
       >
-        {disclaimer_section.headline}
+        {content.disclaimer_section.headline}
       </h2>
       <p
-        className="max-w-3xl mx-auto"
-        style={{
-          fontSize: descriptionStyle.fontSize,
-          fontWeight: descriptionStyle.fontWeight,
-          fontFamily: typography.family['sans-serif'].value,
-          lineHeight: descriptionStyle.lineHeight,
-          color: colors.neutral['medium-gray-text'].value,
-          marginBottom: spacing.scale.lg,
-        }}
+        className="max-w-3xl mx-auto text-base font-normal mb-8 text-muted-foreground"
       >
-        {disclaimer_section.description}
+        {content.disclaimer_section.description}
       </p>
       <Button
-        style={{
-          fontFamily: buttonBaseStyle.fontFamily,
-          fontWeight: buttonBaseStyle.fontWeight,
-          borderRadius: buttonBaseStyle.borderRadius,
-          padding: buttonBaseStyle.padding,
-          transition: buttonBaseStyle.transition,
-          backgroundColor: colors.accent['dark-olive'].value,
-          color: colors.primary.background.value,
-        }}
-        className="hover:scale-105"
+        className="bg-primary text-primary-foreground hover:scale-105"
         asChild
       >
-        <a href={disclaimer_section.cta_button.href}>
-          {disclaimer_section.cta_button.text}
+        <a href={content.disclaimer_section.cta_button.href}>
+          {content.disclaimer_section.cta_button.text}
         </a>
       </Button>
     </section>
