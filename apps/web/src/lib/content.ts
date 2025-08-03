@@ -1,4 +1,13 @@
 export const content = {
+  footer: {
+    logo_icon: "next.svg", // Placeholder, replace with actual path if needed
+    copyright_text: "© 2025 July Smriti. All rights reserved.",
+    links: [
+      { text: "Privacy Policy", href: "/privacy" },
+      { text: "Terms of Service", href: "/terms" },
+      { text: "Contact Us", href: "/contact" },
+    ],
+  },
   certificate: {
     title: "Certificate of Achievement",
     subtitle: "This certifies that",
