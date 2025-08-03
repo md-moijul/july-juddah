@@ -4,6 +4,7 @@ import HeroSection from '@/components/sections/hero-section';
 import ImageBanner from '@/components/sections/image-banner';
 import CounterSection from '@/components/sections/counter-section';
 import DisclaimerSection from '@/components/sections/disclaimer-section';
+import PremiumItemsSection from '@/components/sections/premium-items-section';
 
 export default function LandingPage() {
   const { image_banner_section } = content;
@@ -19,6 +20,7 @@ export default function LandingPage() {
         className="my-8"
       />
       <DisclaimerSection />
+      <PremiumItemsSection />
     </>
   );
 }
