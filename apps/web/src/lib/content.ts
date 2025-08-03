@@ -8,4 +8,10 @@ export const content = {
     fullNamePlaceholder: "[Full Name]",
     locationPlaceholder: "[Location]",
   },
+  counter_section: {
+    label: "Attendees",
+    headline: "Join the ranks of those who remember.",
+    counter_value: 100000,
+    counter_text: "Certificates Generated and Counting!",
+  },
 };

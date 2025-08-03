@@ -1,70 +1,32 @@
 
 import React from 'react';
-import content from '@/data/content.json';
-import style from '@/data/style.json';
+import { content } from '@/lib/content';
 
 const CounterSection: React.FC = () => {
-  const { counter_section } = content;
-  const { colors, typography, spacing } = style.designSystemProfile.tokens;
-
-  const sectionPaddingY = spacing.layout.sectionPaddingY;
-
   return (
     <section
-      className="text-center"
-      style={{
-        paddingTop: sectionPaddingY,
-        paddingBottom: sectionPaddingY,
-        backgroundColor: colors.primary.background.value,
-        color: colors.primary.text.value,
-      }}
+      className="text-center py-16 md:py-32 bg-background text-foreground"
     >
       <div className="container mx-auto px-4">
         <p
-          className="uppercase tracking-wider mb-2"
-          style={{
-            fontSize: typography.scale["sub-text"].fontSize,
-            fontWeight: typography.scale["sub-text"].fontWeight,
-            fontFamily: typography.scale["sub-text"].fontFamily,
-            color: colors.accent["subtle-green-text"].value,
-          }}
+          className="uppercase tracking-wider mb-2 text-accent-foreground"
         >
-          {counter_section.label}
+          {content.counter_section.label}
         </p>
         <h2
-          className="font-normal mb-6"
-          style={{
-            fontSize: typography.scale.h2.fontSize,
-            fontWeight: typography.scale.h2.fontWeight,
-            fontFamily: typography.scale.h2.fontFamily,
-            lineHeight: typography.scale.h2.lineHeight,
-          }}
+          className="font-serif text-4xl md:text-6xl font-normal mb-6"
         >
-          {counter_section.headline}
+          {content.counter_section.headline}
         </h2>
         <div
-          className="font-normal mb-4"
-          style={{
-            fontSize: typography.scale.h1.fontSize,
-            fontWeight: typography.scale.h1.fontWeight,
-            fontFamily: typography.scale.h1.fontFamily,
-            lineHeight: typography.scale.h1.lineHeight,
-            color: colors.accent["dark-olive"].value,
-          }}
+          className="font-serif text-6xl md:text-8xl font-normal mb-4 text-primary"
         >
-          {counter_section.counter_value.toLocaleString()}
+          {content.counter_section.counter_value.toLocaleString()}
         </div>
         <p
-          className="max-w-2xl mx-auto"
-          style={{
-            fontSize: typography.scale.body.fontSize,
-            fontWeight: typography.scale.body.fontWeight,
-            fontFamily: typography.scale.body.fontFamily,
-            lineHeight: typography.scale.body.lineHeight,
-            color: colors.neutral["medium-gray-text"].value,
-          }}
+          className="max-w-2xl mx-auto text-muted-foreground"
         >
-          {counter_section.counter_text}
+          {content.counter_section.counter_text}
         </p>
       </div>
     </section>
