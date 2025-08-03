@@ -29,10 +29,12 @@ jest.mock('@/data/style.json', () => ({
         neutral: { 'medium-gray-text': { value: '#666666' } }
       },
       typography: {
-        h1: { fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: '400', fontFamily: 'serif', lineHeight: '1.1' },
-        h2: { fontSize: 'clamp(2rem, 6vw, 3.5rem)', fontWeight: '400', fontFamily: 'serif', lineHeight: '1.2' },
-        body: { fontSize: '1rem', fontWeight: '400', fontFamily: 'sans-serif', lineHeight: '1.6' },
-        'sub-text': { fontSize: '0.875rem', fontWeight: '400', fontFamily: 'sans-serif', lineHeight: '1.5' }
+        scale: {
+          h1: { fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: '400', fontFamily: 'serif', lineHeight: '1.1' },
+          h2: { fontSize: 'clamp(2rem, 6vw, 3.5rem)', fontWeight: '400', fontFamily: 'serif', lineHeight: '1.2' },
+          body: { fontSize: '1rem', fontWeight: '400', fontFamily: 'sans-serif', lineHeight: '1.6' },
+          'sub-text': { fontSize: '0.875rem', fontWeight: '400', fontFamily: 'sans-serif', lineHeight: '1.5' }
+        }
       },
       spacing: {
         layout: { sectionPaddingY: 'clamp(64px, 10vw, 128px)' }
