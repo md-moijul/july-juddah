@@ -1,7 +1,7 @@
 # Unified Project Structure
 
 ```plaintext
-july-smriti-portal/
+july-juddah-portal/
 ├── apps/
 │   └── web/
 │       ├── public/

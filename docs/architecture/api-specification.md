@@ -5,7 +5,7 @@ We will use the OpenAPI 3.0 standard to define our API.
 ```yaml
 openapi: 3.0.0
 info:
-  title: "July Smriti Certificate Generation API"
+  title: "July Juddah Certificate Generation API"
   version: "1.0"
   description: "API for generating personalized PDF certificates for the July Student Revelation event."
 servers:

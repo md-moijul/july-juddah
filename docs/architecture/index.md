@@ -1,8 +1,8 @@
-# July Smriti Certificate Portal Fullstack Architecture Document
+# July Juddah Certificate Portal Fullstack Architecture Document
 
 ## Table of Contents
 
-- [July Smriti Certificate Portal Fullstack Architecture Document](#table-of-contents)
+- [July Juddah Certificate Portal Fullstack Architecture Document](#table-of-contents)
   - [High Level Architecture](./high-level-architecture.md)
       - [Technical Summary](./high-level-architecture.md#technical-summary)
       - [Platform and Infrastructure Choice](./high-level-architecture.md#platform-and-infrastructure-choice)

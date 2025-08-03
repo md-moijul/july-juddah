@@ -1,4 +1,4 @@
-# July Smriti Certificate Portal Product Requirements Document (PRD)
+# July Juddah Certificate Portal Product Requirements Document (PRD)
 
 | Date | Version | Description | Author |
 | :--- | :--- | :--- | :--- |
@@ -143,7 +143,7 @@ The testing strategy will focus on Unit Tests for individual UI components and I
 ### Next Steps
 
 #### UX Expert Prompt
-"The PRD for the July Smriti Certificate Portal (V1.0) is complete. Please review the `User Interface Design Goals` and the overall requirements to create a detailed UI/UX Specification using the `front-end-spec-tmpl` template. The primary goal is a simple, mobile-first, and celebratory user experience for generating a digital certificate."
+"The PRD for the July Juddah Certificate Portal (V1.0) is complete. Please review the `User Interface Design Goals` and the overall requirements to create a detailed UI/UX Specification using the `front-end-spec-tmpl` template. The primary goal is a simple, mobile-first, and celebratory user experience for generating a digital certificate."
 
 #### Architect Prompt
-"The PRD for the July Smriti Certificate Portal (V1.0) is complete. Please review it, along with the technical assumptions, to create a corresponding Architecture Document. The key constraints are a serverless approach for PDF generation and a monorepo structure to accommodate future V2.0 features."
+"The PRD for the July Juddah Certificate Portal (V1.0) is complete. Please review it, along with the technical assumptions, to create a corresponding Architecture Document. The key constraints are a serverless approach for PDF generation and a monorepo structure to accommodate future V2.0 features."

@@ -1,6 +1,6 @@
-# July Smriti Certificate Portal Fullstack Architecture Document
+# July Juddah Certificate Portal Fullstack Architecture Document
 
-This document outlines the complete fullstack architecture for the July Smriti Certificate Portal (V1.0), including the frontend implementation, the serverless backend for PDF generation, and their integration. It serves as the single source of truth for AI-driven development, ensuring consistency across the entire technology stack.
+This document outlines the complete fullstack architecture for the July Juddah Certificate Portal (V1.0), including the frontend implementation, the serverless backend for PDF generation, and their integration. It serves as the single source of truth for AI-driven development, ensuring consistency across the entire technology stack.
 
 | Date | Version | Description | Author |
 | :--- | :--- | :--- | :--- |
@@ -111,7 +111,7 @@ We will use the OpenAPI 3.0 standard to define our API.
 ```yaml
 openapi: 3.0.0
 info:
-  title: "July Smriti Certificate Generation API"
+  title: "July Juddah Certificate Generation API"
   version: "1.0"
   description: "API for generating personalized PDF certificates for the July Student Revelation event."
 servers:
@@ -350,7 +350,7 @@ Our backend is a serverless function utilizing a Next.js API Route.
 ## Unified Project Structure
 
 ```plaintext
-july-smriti-portal/
+july-juddah-portal/
 ├── apps/
 │   └── web/
 │       ├── public/
@@ -442,4 +442,4 @@ july-smriti-portal/
 The planning and architecture phase is now complete. The next step is to transition to implementation in an IDE.
 
 **Handoff to Development:**
-"The PRD and Architecture documents for the July Smriti Certificate Portal (V1.0) are complete and located in the `docs/` folder. Please begin the development phase by sharding the `prd.md` and `architecture.md` documents. Once sharded, you can start the story creation cycle for Epic 1."
+"The PRD and Architecture documents for the July Juddah Certificate Portal (V1.0) are complete and located in the `docs/` folder. Please begin the development phase by sharding the `prd.md` and `architecture.md` documents. Once sharded, you can start the story creation cycle for Epic 1."
