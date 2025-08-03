@@ -1,4 +1,16 @@
 export const content = {
+    navigation: {
+        logo_text: "July Juddah",
+        links: [
+            { text: "Home", href: "/" },
+            { text: "About", href: "/about" },
+            { text: "Premium", href: "#premium" },
+        ],
+        cta_button: {
+            text: "Generate Certificate",
+            href: "/generate",
+        },
+    },
     footer: {
         logo_icon: "next.svg", // Placeholder, replace with actual path if needed
         copyright_text: "© 2025 July Juddah. All rights reserved.",

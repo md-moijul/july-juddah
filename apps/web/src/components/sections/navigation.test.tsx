@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Navigation from './navigation';
-import content from '@/data/content.json';
+import { content } from '@/lib/content';
 
 // Mock Next.js Link component
 jest.mock('next/link', () => {

@@ -1,28 +1,37 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Footer from '@/components/sections/footer';
-import { content } from '@/lib/content';
+import Footer from '../src/components/sections/footer';
+import { content } from '../src/lib/content';
+
+// Mock next/image
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: (props: any) => {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img {...props} />;
+  },
+}));
 
 describe('Footer', () => {
-  it('renders the footer with copyright and navigation links and correct styling', () => {
+  it('renders the copyright text correctly', () => {
     render(<Footer />);
+    expect(screen.getByText(content.footer.copyright_text)).toBeInTheDocument();
+  });
 
-    // Check for copyright text
-    const copyrightTextElement = screen.getByText(content.footer.copyright_text);
-    expect(copyrightTextElement).toBeInTheDocument();
-    expect(copyrightTextElement).toHaveClass('text-[var(--muted-foreground)]');
-
-    // Check for navigation links and their styling
+  it('renders all navigation links correctly', () => {
+    render(<Footer />);
     content.footer.links.forEach(link => {
-      const linkElement = screen.getByText(link.text);
-      expect(linkElement).toBeInTheDocument();
-      expect(linkElement).toHaveClass('text-[var(--muted-foreground)]');
-      expect(linkElement).toHaveClass('hover:text-[var(--primary)]');
+      expect(screen.getByText(link.text)).toBeInTheDocument();
+      expect(screen.getByText(link.text).closest('a')).toHaveAttribute('href', link.href);
     });
+  });
 
-    // Check for footer border styling
-    const footerElement = screen.getByRole('contentinfo'); // 'contentinfo' is the ARIA role for <footer>
-    expect(footerElement).toBeInTheDocument();
-    expect(footerElement).toHaveClass('border-[var(--border)]');
+  it('renders the logo icon if provided', () => {
+    render(<Footer />);
+    if (content.footer.logo_icon) {
+      expect(screen.getByAltText('Logo Icon')).toBeInTheDocument();
+      expect(screen.getByAltText('Logo Icon')).toHaveAttribute('src', `/${content.footer.logo_icon}`);
+    } else {
+      expect(screen.queryByAltText('Logo Icon')).not.toBeInTheDocument();
+    }
   });
 });

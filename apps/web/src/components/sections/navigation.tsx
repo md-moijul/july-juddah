@@ -4,14 +4,10 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import content from '@/data/content.json';
-import style from '@/data/style.json';
+import { content } from '@/lib/content';
 
 const Navigation = () => {
   const { navigation } = content;
-  const { colors, typography } = style.designSystemProfile.tokens;
-  const { navigation: navStyle } = style.designSystemProfile.components;
-
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -20,17 +16,16 @@ const Navigation = () => {
 
   return (
     <nav
-      className="flex items-center justify-between flex-wrap p-6"
+      className="sticky top-0 z-50 flex items-center justify-between flex-wrap p-6 bg-opacity-50 backdrop-blur-lg"
       style={{
-        backgroundColor: colors.primary.background.value,
-        height: navStyle.height,
-        borderBottom: navStyle.borderBottom,
+        backgroundColor: 'var(--background)',
+        borderBottom: '1px solid var(--border)',
       }}
     >
       <div className="flex items-center flex-shrink-0 text-black mr-6">
         <span
           className="font-semibold text-xl tracking-tight"
-          style={{ color: colors.primary.text.value }}
+          style={{ color: 'var(--primary-text)' }}
         >
           {navigation.logo_text}
         </span>
@@ -63,10 +58,9 @@ const Navigation = () => {
               href={link.href}
               className="block mt-4 lg:inline-block lg:mt-0 text-black hover:text-gray-600 mr-4"
               style={{
-                fontSize: typography.scale['nav-link'].fontSize,
-                fontWeight: typography.scale['nav-link'].fontWeight,
-                fontFamily: typography.scale['nav-link'].fontFamily,
-                color: colors.primary.text.value,
+                fontSize: 'var(--body-font-size)',
+                fontWeight: 'var(--body-font-weight)',
+                color: 'var(--primary-text)',
               }}
             >
               {link.text}
@@ -78,13 +72,9 @@ const Navigation = () => {
             <Button
               className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-600 hover:bg-white mt-4 lg:mt-0"
               style={{
-                backgroundColor: colors.accent['dark-olive'].value,
-                color: colors.primary.background.value,
-                borderRadius: style.designSystemProfile.tokens.borderRadius.full,
-                padding: style.designSystemProfile.components.button.baseStyle.padding,
-                transition: style.designSystemProfile.components.button.baseStyle.transition,
-                fontWeight: style.designSystemProfile.components.button.baseStyle.fontWeight,
-                fontFamily: style.designSystemProfile.components.button.baseStyle.fontFamily,
+                backgroundColor: 'var(--primary)',
+                color: 'var(--primary-foreground)',
+                borderRadius: 'var(--radius)',
               }}
             >
               {navigation.cta_button.text}
