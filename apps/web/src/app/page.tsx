@@ -5,6 +5,7 @@ import ImageBanner from '@/components/sections/image-banner';
 import CounterSection from '@/components/sections/counter-section';
 import DisclaimerSection from '@/components/sections/disclaimer-section';
 import PremiumItemsSection from '@/components/sections/premium-items-section';
+import FinalCtaSection from '@/components/sections/final-cta-section';
 
 export default function LandingPage() {
   const { image_banner_section } = content;
@@ -21,6 +22,7 @@ export default function LandingPage() {
       />
       <DisclaimerSection />
       <PremiumItemsSection />
+      <FinalCtaSection />
     </>
   );
 }
