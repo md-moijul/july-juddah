@@ -9,11 +9,54 @@ jest.mock('@/data/style.json', () => ({
       typography: {
         scale: {
           'sub-text': { fontSize: '1rem', fontWeight: 'normal', fontFamily: 'sans-serif' },
+          body: { fontSize: '1rem', fontWeight: 'normal', fontFamily: 'sans-serif', lineHeight: '1.5' },
+          h2: { fontSize: '2rem', fontWeight: 'bold', fontFamily: 'serif', lineHeight: '1.2' },
+          h3: { fontSize: '1.5rem', fontWeight: 'bold', fontFamily: 'sans-serif', lineHeight: '1.3' },
+          link: { fontSize: '1rem', fontWeight: 'normal', fontFamily: 'sans-serif', lineHeight: '1.5' },
+          'nav-link': { fontSize: '1rem', fontWeight: 'normal', fontFamily: 'sans-serif', lineHeight: '1.5' },
+        },
+        family: {
+          'sans-serif': { value: '' },
+          serif: { value: '' },
         },
       },
       colors: {
         accent: {
           'subtle-green-text': { value: '#000000' },
+          'dark-olive': { value: '#000000' },
+        },
+        primary: {
+          text: { value: '#000000' },
+          background: { value: '#FFFFFF' },
+        },
+        neutral: {
+          'medium-gray-text': { value: '#000000' },
+          'light-gray-border': { value: '#E0E0E0' },
+        },
+      },
+      spacing: {
+        layout: {
+          sectionPaddingY: '2rem',
+          containerPaddingX: '1rem',
+        },
+        scale: {
+          sm: '0.5rem',
+          md: '1rem',
+          lg: '1.5rem',
+        },
+      },
+    },
+    components: {
+      button: {
+        baseStyle: {
+          fontFamily: 'sans-serif',
+          fontWeight: 'bold',
+          borderRadius: '0.5rem',
+          padding: '1rem 2rem',
+          transition: 'all 0.2s ease-in-out',
+        },
+        variants: {
+          primary: {},
         },
       },
     },

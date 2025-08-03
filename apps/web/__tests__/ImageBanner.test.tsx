@@ -5,7 +5,7 @@ import '@testing-library/jest-dom';
 // Mock the next/image component
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: any) => {
+  default: ({ fill, ...props }: any) => {
     // eslint-disable-next-line @next/next/no-img-element
     return <img {...props} />;
   },
