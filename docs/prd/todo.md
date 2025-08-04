@@ -1,0 +1,8 @@
+- Database and storing userdata as well as order data.
+- refeer setup
+    - refeer trap with if 10 of you refer buys hard copy, you'll get it for free.
+- styling and wording change
+    - adding terms and conditions
+    - QnA section
+    - Premium feature.
+- otp
