@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useCertificateDownload } from "@/hooks/useCertificateDownload";
 import OtpVerificationModal from "@/components/OtpVerificationModal";
 import { Input } from "@/components/ui/input";
@@ -15,12 +16,14 @@ import {
 } from "@/components/ui/select";
 import { CertificatePreview } from "@/components/certificate-preview";
 import districts from "@/data/districts.json";
+import Image from "next/image";
 
 export default function GeneratePage() {
   const [fullName, setFullName] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
   const handleGenerateCertificate = async () => {
     try {
@@ -31,18 +34,19 @@ export default function GeneratePage() {
       const imageUrl = `/api/generate-image?name=${encodeURIComponent(fullName)}&district=${encodeURIComponent(selectedDistrict)}`;
       setGeneratedImageUrl(imageUrl);
     } catch (err) {
+        console.log('err: ', err);
       // setError(err instanceof Error ? err.message : 'An unknown error occurred.'); // Error handling for image generation
     } finally {
       // setIsLoading(false); // Loading state for image generation
     }
   };
 
-  const { downloadCertificate, isLoading, error } = useCertificateDownload();
+  const { isLoading, error } = useCertificateDownload();
 
   const handleGetHardCopy = () => {
-    alert("Hard copy request initiated! (This is a placeholder action)");
-    // In a real application, this would trigger a backend process
-    // for printing and shipping.
+    if (generatedImageUrl) {
+      router.push(`/purchase?imageUrl=${encodeURIComponent(generatedImageUrl)}`);
+    }
   };
 
   return (
@@ -94,7 +98,7 @@ export default function GeneratePage() {
       {generatedImageUrl && (
         <div className="mt-8 w-full max-w-md">
           <h2 className="text-2xl font-bold mb-4 text-center">Your Certificate</h2>
-          <img src={generatedImageUrl} alt="Generated Certificate" className="w-full h-auto border rounded-lg shadow-lg" />
+          <Image src={generatedImageUrl} alt="Generated Certificate" className="w-full h-auto border rounded-lg shadow-lg" />
           <div className="flex justify-center space-x-4 mt-4">
             <Button onClick={() => setIsModalOpen(true)} disabled={isLoading}>Download E-certificate</Button>
             <Button onClick={handleGetHardCopy} variant="outline">Get a Hard Copy</Button>

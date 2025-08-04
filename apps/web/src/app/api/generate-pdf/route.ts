@@ -2,8 +2,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { generateUniqueCertificateNumber } from '@/lib/certificateUtils';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
 export async function POST(req: NextRequest) {
     try {
@@ -20,14 +18,6 @@ export async function POST(req: NextRequest) {
         const pages = pdfDoc.addPage();
         const firstPage = pages;
 
-        // Embed fonts (placeholders for Lora and Inter)
-        // You would need to load your font files here, e.g.,
-        // const fontBytesLora = readFileSync(join(process.cwd(), 'public', 'fonts', 'Lora-Regular.ttf'));
-        // const fontLora = await pdfDoc.embedFont(fontBytesLora);
-        // const fontBytesInter = readFileSync(join(process.cwd(), 'public', 'fonts', 'Inter-Regular.ttf'));
-        // const fontInter = await pdfDoc.embedFont(fontBytesInter);
-
-        // For now, using StandardFonts as a placeholder
         const fontLora = await pdfDoc.embedFont(StandardFonts.TimesRoman); // Using TimesRoman as a placeholder for a more decorative font. For a true cursive font, you would need to provide the font file.
         const fontInter = await pdfDoc.embedFont(StandardFonts.Helvetica);
         const fontMonospace = await pdfDoc.embedFont(StandardFonts.Courier);
