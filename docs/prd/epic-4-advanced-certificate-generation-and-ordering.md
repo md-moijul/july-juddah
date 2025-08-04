@@ -14,7 +14,7 @@ This epic outlines the requirements for a comprehensive overhaul of the certific
 - Two CTA buttons are presented below the certificate: "Download E-certificate" and "Get a Hard Copy".
 
 ### 2.2. Enhanced PDF Generation
-- The backend service will use a new PDF template (`8.pdf`).
+- The backend service will use a new PDF template (`template.pdf`).
 - It will dynamically populate the user's name and selected district.
 - A unique, sequential certificate number will be generated and added to each PDF.
 
