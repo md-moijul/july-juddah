@@ -1,84 +1,123 @@
 // src/app/generate/page.test.tsx
 
-import React from "react";
-import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
-import GeneratePage from "../generate/page";
-import * as CertificateService from "@/services/certificateService";
+import { render, screen, cleanup } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import GeneratePage from "./page";
 
-jest.mock("@/services/certificateService");
+// --- NECESSARY MOCKS ---
+
+jest.mock("@/components/ui/select", () => {
+  const districts = ["New York", "Los Angeles", "Chicago"];
+  return {
+    __esModule: true,
+    Select: ({
+      onValueChange,
+      value,
+    }: {
+      onValueChange: (value: string) => void;
+      value: string;
+    }) => (
+      <select
+        onChange={(e) => onValueChange(e.target.value)}
+        value={value}
+        data-testid="district-select"
+      >
+        <option value="" disabled>Select a district</option>
+        {districts.map(d => <option key={d} value={d}>{d}</option>)}
+      </select>
+    ),
+  };
+});
+
+jest.mock("@/components/OtpVerificationModal", () => {
+  return jest.fn(({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+    return (
+      <div data-testid="mock-otp-modal">
+        <button onClick={onClose} data-testid="mock-otp-modal-close-button">Close</button>
+      </div>
+    );
+  });
+});
+
+jest.mock("@/hooks/useCertificateDownload", () => ({
+  useCertificateDownload: () => ({
+    downloadCertificate: jest.fn(),
+    isLoading: false,
+    error: null,
+  }),
+}));
+
+jest.mock("@/data/districts.json", () => ["New York", "Los Angeles", "Chicago"], { virtual: true });
+
 
 describe("GeneratePage", () => {
+  const user = userEvent.setup({
+    advanceTimers: jest.advanceTimersByTime,
+  });
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
   afterEach(() => {
     cleanup();
-    // Use restoreAllMocks to ensure spies are fully reset between tests
-    jest.restoreAllMocks();
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
   });
 
-  // No changes to the first two tests...
-  it("renders input fields and download button", () => {
+  it("should render the main heading without crashing", () => {
     render(<GeneratePage />);
-    expect(screen.getByPlaceholderText("Full Name")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Location")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Download PDF/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Generate Your Certificate/i })).toBeInTheDocument();
   });
 
-  it("updates CertificatePreview with input values", () => {
+  it("should update the certificate preview when user types in the form", async () => {
     render(<GeneratePage />);
-    const fullNameInput = screen.getByPlaceholderText("Full Name");
-    const locationInput = screen.getByPlaceholderText("Location");
-    fireEvent.change(fullNameInput, { target: { value: "John Doe" } });
-    fireEvent.change(locationInput, { target: { value: "New York" } });
-    expect(screen.getByText("John Doe")).toBeInTheDocument();
-    expect(screen.getByText("New York")).toBeInTheDocument();
+    await user.type(screen.getByLabelText(/What is your name?/i), "Jane Doe");
+    await user.selectOptions(screen.getByTestId("district-select"), "New York");
+    expect(screen.getByText("Jane Doe")).toBeInTheDocument();
+    expect(screen.getByText(/Revelation in New York/i)).toBeInTheDocument();
   });
 
-  it('should show loading indicator and trigger download on success', async () => {
-    const mockBlob = new Blob(['test pdf content'], { type: 'application/pdf' });
-    jest.spyOn(CertificateService, 'generateCertificatePdf').mockResolvedValue(mockBlob);
-
-    // Mock URL methods
-    global.URL.createObjectURL = jest.fn(() => 'blob:http://test/123');
-    global.URL.revokeObjectURL = jest.fn();
-
-    // ✅ **THE FIX:** Spy on the anchor element's click method directly
-    // This allows the component to create a real element, preventing the 'Node' error,
-    // while still letting us check if the click was triggered.
-    const mockAnchorClick = jest.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
-
+  it("should show the generated image and download buttons after generation", async () => {
     render(<GeneratePage />);
-
-    // User actions
-    fireEvent.change(screen.getByPlaceholderText('Full Name'), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByPlaceholderText('Location'), { target: { value: 'New York' } });
-    fireEvent.click(screen.getByRole('button', { name: /Download PDF/i }));
-
-    await waitFor(() => {
-      // Assert that the download link was "clicked"
-      expect(mockAnchorClick).toHaveBeenCalled();
-    });
-
-    // Final state assertions
-    expect(CertificateService.generateCertificatePdf).toHaveBeenCalledWith({
-      fullName: 'John Doe',
-      location: 'New York',
-    });
-    expect(global.URL.createObjectURL).toHaveBeenCalledWith(mockBlob);
-    expect(screen.getByRole('button', { name: /Download PDF/i })).toHaveTextContent('Download PDF');
+    await user.type(screen.getByLabelText(/What is your name?/i), "John Doe");
+    await user.selectOptions(screen.getByTestId("district-select"), "New York");
+    await user.click(screen.getByRole("button", { name: /Generate Certificate/i }));
+    jest.runAllTimers();
+    expect(await screen.findByAltText("Generated Certificate")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Download E-certificate/i })).toBeInTheDocument();
   });
 
-  it('should display error message on API failure', async () => {
-    // This test should now pass without changes because mocks are properly restored.
-    jest.spyOn(CertificateService, 'generateCertificatePdf').mockRejectedValueOnce(new Error('Network Error'));
-
+  it("should open the OTP modal when the download button is clicked", async () => {
     render(<GeneratePage />);
+    await user.type(screen.getByLabelText(/What is your name?/i), "John Doe");
+    await user.selectOptions(screen.getByTestId("district-select"), "New York");
+    await user.click(screen.getByRole("button", { name: /Generate Certificate/i }));
+    jest.runAllTimers();
 
-    fireEvent.change(screen.getByPlaceholderText('Full Name'), { target: { value: 'Jane Doe' } });
-    fireEvent.change(screen.getByPlaceholderText('Location'), { target: { value: 'London' } });
-    fireEvent.click(screen.getByRole('button', { name: /Download PDF/i }));
+    const downloadButton = await screen.findByRole("button", { name: /Download E-certificate/i });
+    await user.click(downloadButton);
 
-    await waitFor(() => {
-      expect(screen.getByText('Network Error')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Download PDF/i })).toHaveTextContent('Download PDF');
-    });
+    // This is the only assertion needed: it confirms the modal is visible to the user.
+    expect(screen.getByTestId("mock-otp-modal")).toBeInTheDocument();
+  });
+
+  it("should close the OTP modal when the close action is triggered", async () => {
+    render(<GeneratePage />);
+    // Setup:
+    await user.type(screen.getByLabelText(/What is your name?/i), "John Doe");
+    await user.selectOptions(screen.getByTestId("district-select"), "New York");
+    await user.click(screen.getByRole("button", { name: /Generate Certificate/i }));
+    jest.runAllTimers();
+    const downloadButton = await screen.findByRole("button", { name: /Download E-certificate/i });
+    await user.click(downloadButton);
+    expect(screen.getByTestId("mock-otp-modal")).toBeInTheDocument();
+
+    // Action:
+    await user.click(screen.getByTestId("mock-otp-modal-close-button"));
+
+    // This is the only assertion needed: it confirms the modal is gone from the user's view.
+    expect(screen.queryByTestId("mock-otp-modal")).not.toBeInTheDocument();
   });
 });

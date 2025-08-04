@@ -1,4 +1,3 @@
-import { db } from '@vercel/postgres';
 
 export async function generateUniqueCertificateNumber(): Promise<string> {
     // This is a simplified example. In a real application, you'd want a more robust

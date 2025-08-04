@@ -14,7 +14,6 @@ const customJestConfig = {
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  modulePathIgnorePatterns: ['<rootDir>/__mocks__'],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

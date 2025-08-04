@@ -32,8 +32,11 @@ describe('PremiumItemsSection', () => {
     expect(headlineElement).toHaveClass('mb-[var(--spacing-md)]');
 
     const subheadlineElement = screen.getByText(content.premium_items_section.subheadline);
+    expect(subheadlineElement).toHaveClass('max-w-3xl');
+    expect(subheadlineElement).toHaveClass('mx-auto');
     expect(subheadlineElement).toHaveClass('text-[var(--body-font-size)]');
     expect(subheadlineElement).toHaveClass('font-[var(--body-font-weight)]');
+    expect(subheadlineElement).toHaveClass('font-normal');
     expect(subheadlineElement).toHaveClass('font-sans');
     expect(subheadlineElement).toHaveClass('leading-[var(--body-line-height)]');
     expect(subheadlineElement).toHaveClass('text-[var(--medium-gray-text)]');

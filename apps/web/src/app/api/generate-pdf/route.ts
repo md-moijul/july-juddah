@@ -14,13 +14,11 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Missing fullName or location' }, { status: 400 });
         }
 
-        // Load the existing PDF template
-        const templatePath = join(process.cwd(), 'public', 'template.pdf');
-        const existingPdfBytes = readFileSync(templatePath);
-        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        // Create a new PDF document
+        const pdfDoc = await PDFDocument.create();
 
-        const pages = pdfDoc.getPages();
-        const firstPage = pages[0];
+        const pages = pdfDoc.addPage();
+        const firstPage = pages;
 
         // Embed fonts (placeholders for Lora and Inter)
         // You would need to load your font files here, e.g.,

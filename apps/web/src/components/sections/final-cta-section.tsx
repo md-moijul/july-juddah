@@ -8,17 +8,16 @@ export default function FinalCtaSection() {
       aria-label="Final CTA Section"
       className="container mx-auto text-center py-[var(--section-padding-y)]">
       <h2
-        className="font-serif text-4xl font-bold mb-4"
+        className="text-[var(--h2-font-size)] font-[var(--h2-font-weight)] font-serif leading-[var(--h2-line-height)] text-[var(--foreground)] mb-[var(--spacing-md)]"
       >
         {content.final_cta_section.headline}
       </h2>
-      <p
-        className="max-w-3xl mx-auto text-lg mb-8 text-muted-foreground"
-      >
+            <p
+        className="max-w-3xl mx-auto text-[var(--body-font-size)] font-[var(--body-font-weight)] mb-[var(--spacing-lg)] text-[var(--muted-foreground)]">
         {content.final_cta_section.subheadline}
       </p>
       <Button
-        className="bg-primary text-primary-foreground hover:scale-105"
+                className="bg-[var(--primary)] text-[var(--primary-foreground)] hover:scale-105"
         asChild
       >
         <a href={content.final_cta_section.cta_button.href}>

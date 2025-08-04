@@ -37,8 +37,8 @@ export const content = {
         courseCompletion: "has successfully completed a course in",
         courseNamePlaceholder: "[Course Name - Placeholder]",
         at: "at",
-        fullNamePlaceholder: "[Full Name]",
-        locationPlaceholder: "[Location]",
+        fullNamePlaceholder: "[Your Name]",
+        locationPlaceholder: "[Your Town]",
     },
     counter_section: {
         label: "Attendees",

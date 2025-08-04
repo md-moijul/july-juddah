@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { useCertificateDownload } from "@/hooks/useCertificateDownload";
+import OtpVerificationModal from "@/components/OtpVerificationModal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +20,7 @@ export default function GeneratePage() {
   const [fullName, setFullName] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleGenerateCertificate = async () => {
     try {
@@ -94,7 +96,7 @@ export default function GeneratePage() {
           <h2 className="text-2xl font-bold mb-4 text-center">Your Certificate</h2>
           <img src={generatedImageUrl} alt="Generated Certificate" className="w-full h-auto border rounded-lg shadow-lg" />
           <div className="flex justify-center space-x-4 mt-4">
-            <Button onClick={() => downloadCertificate(fullName, selectedDistrict)} disabled={isLoading}>Download E-certificate</Button>
+            <Button onClick={() => setIsModalOpen(true)} disabled={isLoading}>Download E-certificate</Button>
             <Button onClick={handleGetHardCopy} variant="outline">Get a Hard Copy</Button>
           </div>
         </div>
@@ -105,6 +107,11 @@ export default function GeneratePage() {
           <CertificatePreview fullName={fullName} location={selectedDistrict} />
         </div>
       )}
+
+      <OtpVerificationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
