@@ -49,11 +49,11 @@ export function HardCopyTab({ name, town, phone }: HardCopyTabProps) {
       {error && <div className="text-red-500">{error}</div>}
       <div>
         <Label htmlFor="name">Name</Label>
-        <Input id="name" type="text" value={name}  />
+        <Input id="name" type="text" value={name} readOnly />
       </div>
       <div>
         <Label htmlFor="phone">Phone Number</Label>
-        <Input id="phone" type="tel" value={phone}  />
+        <Input id="phone" type="tel" value={phone} readOnly />
       </div>
       <div>
         <Label htmlFor="town">Town</Label>
