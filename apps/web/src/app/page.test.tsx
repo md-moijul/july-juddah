@@ -1,6 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import LandingPage from '@/app/page';
 import Image from 'next/image';
+
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: (props: any) => {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img {...props} src={`/_next/image?url=${encodeURIComponent(props.src)}&w=3840&q=75`} />;
+  },
+}));
 import '@testing-library/jest-dom';
 
 // Mock the style.json import
@@ -66,9 +74,9 @@ jest.mock('@/data/style.json', () => ({
 
 // Mock the ImageBanner component
 jest.mock('@/components/ImageBanner', () => {
-  const ImageBanner = ({ className }: { className?: string }) => (
-    <div data-testid="mock-image-banner" className={className}>
-      <Image src="/mock-image.jpg" alt="Mock Image" width={500} height={300} />
+  const ImageBanner = ({ src, alt, className }: { src: string; alt: string; className?: string }) => (
+    <div data-testid="image-banner-container" className={className}>
+      <Image src={src} alt={alt} width={500} height={300} />
     </div>
   );
   ImageBanner.displayName = 'ImageBanner';

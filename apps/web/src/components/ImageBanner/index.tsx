@@ -12,8 +12,8 @@ const ImageBanner: React.FC<ImageBannerProps> = ({ src, alt, className }) => {
       <Image
         src={src}
         alt={alt}
-        fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        width={500}
+        height={300}
         className="w-full h-full"
       />
     </div>

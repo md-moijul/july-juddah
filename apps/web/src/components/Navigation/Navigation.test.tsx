@@ -13,7 +13,7 @@ jest.mock('next/link', () => {
 });
 
 // Mock the Button component from shadcn/ui
-jest.mock('@/components/Button', () => ({
+jest.mock('../ui/button', () => ({
   Button: ({ children, ...props }: React.ComponentPropsWithoutRef<'button'>) => (
     <button {...props}>{children}</button>
   ),

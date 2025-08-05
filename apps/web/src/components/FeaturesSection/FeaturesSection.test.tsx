@@ -9,7 +9,7 @@ jest.mock('next/image', () => ({
   __esModule: true,
   default: (props: ImageProps) => {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img {...props} alt={props.alt as string} />;
+    return <img {...props} />;
   },
 }));
 
