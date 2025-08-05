@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import HardCopyTab from "@/components/sections/HardCopyTab";
 import { CertificateForm } from "@/components/CertificateForm";
 import { CertificatePreview } from "@/components/certificate-preview";
+import EcertificateTab from "@/components/EcertificateTab";
 
 export default function GeneratePage() {
   const [fullName, setFullName] = useLocalStorageState("fullName", "");
@@ -26,7 +27,7 @@ export default function GeneratePage() {
           <TabsTrigger value="hard-copy">Order Hard Copy</TabsTrigger>
         </TabsList>
         <TabsContent value="e-certificate">
-          <>to do</>
+          <EcertificateTab name={fullName} town={selectedDistrict} />
         </TabsContent>
         <TabsContent value="hard-copy">
           <HardCopyTab />
