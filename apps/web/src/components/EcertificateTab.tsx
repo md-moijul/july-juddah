@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { createCertificate } from '@/app/actions/certificate';
+import { Captcha } from './Captcha';
 
 interface EcertificateTabProps {
   name: string;
@@ -14,30 +15,37 @@ interface EcertificateTabProps {
 export default function EcertificateTab({ name, town }: EcertificateTabProps) {
   const [phone, setPhone] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [isCaptchaVerified, setIsCaptchaVerified] = useState(true); // Mock
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleDownload = async () => {
     setIsLoading(true);
     setError(null);
-        const result = await createCertificate(name, town, phone);
+    if (!captchaToken) {
+      setError("Please complete the CAPTCHA.");
+      setIsLoading(false);
+      return;
+    }
+    const result = await createCertificate(name, town, phone, captchaToken);
     setIsLoading(false);
 
     if (result.success) {
-      // Trigger download
+      const response = await fetch(`/api/certificate/${result.certificateNumber}`);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-            link.href = `/api/certificate/${result.certificateNumber}`;
-      link.download = 'certificate.pdf';
+      link.href = url;
+      link.setAttribute('download', 'e-certificate.pdf');
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      link.parentNode?.removeChild(link);
     } else {
       setError(result.error??'');
     }
   };
 
-  const isButtonDisabled = !phone || !termsAccepted || !isCaptchaVerified || isLoading;
+  const isButtonDisabled = !phone || !termsAccepted || !captchaToken || isLoading;
 
   return (
     <div className="space-y-4">
@@ -60,9 +68,7 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
         />
         <Label htmlFor="terms">I accept the Terms & Conditions</Label>
       </div>
-      <div id="captcha-placeholder" className="w-full h-20 bg-gray-200 rounded-md flex items-center justify-center">
-        <p className="text-gray-500">CAPTCHA Placeholder</p>
-      </div>
+      <Captcha onChange={setCaptchaToken} />
       <Button onClick={handleDownload} disabled={isButtonDisabled} className="w-full">
         {isLoading ? 'Generating...' : 'Confirm & Download'}
       </Button>
