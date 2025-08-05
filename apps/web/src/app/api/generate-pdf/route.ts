@@ -76,9 +76,6 @@ export async function POST(req: NextRequest) {
             color: rgb(0, 0, 0),
         });
 
-        // Mocking database insertion for now
-        console.log('Mocking database insertion for certificate:', { fullName, location, certificateNumber });
-
         const pdfBytes = await pdfDoc.save();
 
         return new NextResponse(pdfBytes, {
@@ -88,8 +85,7 @@ export async function POST(req: NextRequest) {
                 'Content-Disposition': `attachment; filename="certificate_${fullName.replace(/ /g, '_')}.pdf"`,
             },
         });
-    } catch (error) {
-        console.error('Error generating PDF:', error);
+    } catch (_e) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

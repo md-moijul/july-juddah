@@ -4,9 +4,9 @@ import Image from 'next/image';
 
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: any) => {
+  default: (props: { src: string; alt: string; className?: string; width?: number; height?: number }) => {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img {...props} src={`/_next/image?url=${encodeURIComponent(props.src)}&w=3840&q=75`} />;
+    return <img alt="" {...props} src={`/_next/image?url=${encodeURIComponent(props.src)}&w=3840&q=75`} />;
   },
 }));
 import '@testing-library/jest-dom';
