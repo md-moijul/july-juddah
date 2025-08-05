@@ -16,9 +16,11 @@ interface CertificateFormProps {
   setFullName: (value: string) => void;
   selectedDistrict: string;
   setSelectedDistrict: (value: string) => void;
+  phone: string;
+  setPhone: (value: string) => void;
 }
 
-export function CertificateForm({ fullName, setFullName, selectedDistrict, setSelectedDistrict }: CertificateFormProps) {
+export function CertificateForm({ fullName, setFullName, selectedDistrict, setSelectedDistrict, phone, setPhone }: CertificateFormProps) {
   return (
     <div className="w-full max-w-md space-y-4">
       <div>
@@ -30,6 +32,19 @@ export function CertificateForm({ fullName, setFullName, selectedDistrict, setSe
           placeholder="Your Full Name"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
+          className="mt-1"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+          What is your phone number?
+        </label>
+        <Input
+          id="phone"
+          placeholder="Your Phone Number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
           className="mt-1"
         />
       </div>
