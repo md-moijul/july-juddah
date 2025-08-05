@@ -34,6 +34,6 @@ This epic refactors the certificate generation and ordering process on the `/gen
 ## Stories
 
 - **Story 5.1: UI Foundation Refactor**: Remove the old modal and buttons, and implement the new Tab component structure on the `GeneratePage`. Create the placeholder `EcertificateTab` and `HardCopyTab` components.
-- **Story 5.2: Backend - Create Certificate Record**: Create the new API endpoint that accepts user details, generates a certificate number, and saves a new record to the `users` table.
+- **Story 5.2: Backend - Create User Record**: Create the new API endpoint that accepts user details, generates a user number, and saves a new record to the `users` table.
 - **Story 5.3: E-Certificate Flow Integration**: Implement the UI and logic for the `EcertificateTab`. Connect the "Confirm & Download" button to the new API endpoint and trigger the PDF download on success.
 - **Story 5.4: Hard Copy Flow**: Implement the UI and logic for the `HardCopyTab`, including pre-filling data. Create a new API endpoint to save the order to the `orders` table.
