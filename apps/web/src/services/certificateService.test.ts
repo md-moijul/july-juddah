@@ -1,8 +1,11 @@
 import { generateCertificatePdf } from "./certificateService";
 
 describe('generateCertificatePdf', () => {
+    let mockFetch: jest.Mock;
+
     beforeEach(() => {
-        global.fetch = jest.fn();
+        mockFetch = jest.fn();
+        global.fetch = mockFetch;
     });
 
     afterEach(() => {
@@ -10,18 +13,21 @@ describe('generateCertificatePdf', () => {
     });
 
     it('should return a Blob on successful PDF generation', async () => {
+        // Arrange
         const mockBlob = new Blob(['test pdf content'], { type: 'application/pdf' });
-        (global.fetch as jest.Mock).mockResolvedValueOnce({
+        mockFetch.mockResolvedValueOnce({
             ok: true,
             status: 200,
             statusText: 'OK',
-            blob: () => Promise.resolve(mockBlob),
+            blob: jest.fn().mockResolvedValue(mockBlob),
         });
-
         const data = { fullName: 'John Doe', location: 'Dhaka' };
+
+        // Act
         const result = await generateCertificatePdf(data);
 
-        expect(global.fetch).toHaveBeenCalledWith(
+        // Assert
+        expect(mockFetch).toHaveBeenCalledWith(
             '/api/generate-pdf',
             {
                 method: 'POST',
@@ -35,14 +41,16 @@ describe('generateCertificatePdf', () => {
     });
 
     it('should throw an error on failed PDF generation', async () => {
-        (global.fetch as jest.Mock).mockResolvedValueOnce({
+        // Arrange
+        mockFetch.mockResolvedValueOnce({
             ok: false,
             status: 500,
             statusText: 'Internal Server Error',
-            text: () => Promise.resolve('Something went wrong'),
+            text: jest.fn().mockResolvedValue('Something went wrong'),
         });
-
         const data = { fullName: 'John Doe', location: 'Dhaka' };
+
+        // Act & Assert
         await expect(generateCertificatePdf(data)).rejects.toThrow(
             'Failed to generate PDF: 500 Internal Server Error - Something went wrong'
         );
