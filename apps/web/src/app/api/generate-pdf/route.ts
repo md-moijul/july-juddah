@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
                 'Content-Disposition': `attachment; filename="certificate_${fullName.replace(/ /g, '_')}.pdf"`,
             },
         });
-    } catch (_e) {
+    } catch (_) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
