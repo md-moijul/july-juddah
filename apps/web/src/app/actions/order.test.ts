@@ -76,7 +76,7 @@ describe('createOrder', () => {
             phone: '0987654321',
             shippingAddress: '456 Oak Ave',
         };
-        const newUser = { id: 2, name: 'Jane Doe', town: 'Othertown', phone: '0987654321', certificateNumber: 'placeholder' };
+        const newUser = { id: 2, name: 'Jane Doe', town: 'Othertown', phone: '0987654321', };
 
         mockFindFirst.mockResolvedValueOnce(undefined);
         // Correctly mock the chained call for user creation
@@ -102,7 +102,6 @@ describe('createOrder', () => {
             name: formData.name,
             town: formData.town,
             phone: formData.phone,
-            certificateNumber: 'placeholder',
         }));
         // Check order insert call
         expect(mockInsert).toHaveBeenCalledWith(orders);
@@ -142,7 +141,7 @@ describe('createOrder', () => {
             phone: '1234567890',
             shippingAddress: '123 Main St',
         };
-        const existingUser = { id: 1, name: 'John Doe', town: 'Anytown', phone: '1234567890', certificateNumber: 'abc' };
+        const existingUser = { id: 1, name: 'John Doe', town: 'Anytown', phone: '1234567890' };
 
         mockFindFirst.mockResolvedValueOnce(existingUser);
         mockValues.mockImplementationOnce(() => {

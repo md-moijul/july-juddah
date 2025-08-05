@@ -44,7 +44,6 @@ describe('createCertificate', () => {
         const name = 'John Doe';
         const town = 'Anytown';
         const phone = '1234567890';
-        const captchaToken = 'test-captcha-token';
 
         (global.fetch as jest.Mock).mockResolvedValueOnce({
             json: () => Promise.resolve({ success: true }),
@@ -54,7 +53,7 @@ describe('createCertificate', () => {
         mockValues.mockResolvedValueOnce({});
 
         // Act
-        const result = await createCertificate(name, town, phone, captchaToken);
+        const result = await createCertificate(name, town, phone);
 
         // Assert
         expect(result.success).toBe(true);
@@ -72,10 +71,9 @@ describe('createCertificate', () => {
         const name = '';
         const town = 'Anytown';
         const phone = '1234567890';
-        const captchaToken = 'test-captcha-token';
 
         // Act
-        const result = await createCertificate(name, town, phone, captchaToken);
+        const result = await createCertificate(name, town, phone);
 
         // Assert
         expect(result.success).toBe(false);
@@ -87,10 +85,9 @@ describe('createCertificate', () => {
         const name = 'John Doe';
         const town = '';
         const phone = '1234567890';
-        const captchaToken = 'test-captcha-token';
 
         // Act
-        const result = await createCertificate(name, town, phone, captchaToken);
+        const result = await createCertificate(name, town, phone);
 
         // Assert
         expect(result.success).toBe(false);
@@ -102,41 +99,21 @@ describe('createCertificate', () => {
         const name = 'John Doe';
         const town = 'Anytown';
         const phone = 'invalid-phone';
-        const captchaToken = 'test-captcha-token';
 
         // Act
-        const result = await createCertificate(name, town, phone, captchaToken);
+        const result = await createCertificate(name, town, phone);
 
         // Assert
         expect(result.success).toBe(false);
         expect(result.error).toBe('Valid phone number is required.');
     });
 
-    it('should return success false and an error message if CAPTCHA verification fails', async () => {
-        // Arrange
-        const name = 'John Doe';
-        const town = 'Anytown';
-        const phone = '1234567890';
-        const captchaToken = 'test-captcha-token';
-
-        (global.fetch as jest.Mock).mockResolvedValueOnce({
-            json: () => Promise.resolve({ success: false }),
-        });
-
-        // Act
-        const result = await createCertificate(name, town, phone, captchaToken);
-
-        // Assert
-        expect(result.success).toBe(false);
-        expect(result.error).toBe('CAPTCHA verification failed.');
-    });
 
     it('should return success false and an error message if phone number already exists', async () => {
         // Arrange
         const name = 'John Doe';
         const town = 'Anytown';
         const phone = '1234567890';
-        const captchaToken = 'test-captcha-token';
 
         (global.fetch as jest.Mock).mockResolvedValueOnce({
             json: () => Promise.resolve({ success: true }),
@@ -145,7 +122,7 @@ describe('createCertificate', () => {
         mockFindFirst.mockResolvedValueOnce({ phone: phone });
 
         // Act
-        const result = await createCertificate(name, town, phone, captchaToken);
+        const result = await createCertificate(name, town, phone);
 
         // Assert
         expect(result.success).toBe(false);
@@ -157,10 +134,9 @@ describe('createCertificate', () => {
         const name = 'John Doe';
         const town = 'Anytown';
         const phone = '1234567890';
-        const captchaToken = 'test-captcha-token';
 
         (global.fetch as jest.Mock).mockResolvedValueOnce({
-            json: () => Promise.resolve({ success: true }),
+            json: () => Promise.resolve({ success: false }),
         });
 
         mockFindFirst.mockResolvedValueOnce(undefined);
@@ -169,7 +145,7 @@ describe('createCertificate', () => {
         });
 
         // Act
-        const result = await createCertificate(name, town, phone, captchaToken);
+        const result = await createCertificate(name, town, phone);
 
         // Assert
         expect(result.success).toBe(false);

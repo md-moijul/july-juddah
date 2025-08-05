@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { createCertificate } from '@/app/actions/certificate';
-import { Captcha } from '@/components/Captcha';
 
 interface EcertificateTabProps {
   name: string;
@@ -15,19 +14,14 @@ interface EcertificateTabProps {
 export default function EcertificateTab({ name, town }: EcertificateTabProps) {
   const [phone, setPhone] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleDownload = async () => {
     setIsLoading(true);
     setError(null);
-    if (!captchaToken) {
-      setError("Please complete the CAPTCHA.");
-      setIsLoading(false);
-      return;
-    }
-    const result = await createCertificate(name, town, phone, captchaToken);
+
+    const result = await createCertificate(name, town, phone);
     setIsLoading(false);
 
     if (result.success) {
@@ -45,7 +39,7 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
     }
   };
 
-  const isButtonDisabled = !phone || !termsAccepted || !captchaToken || isLoading;
+  const isButtonDisabled = !phone || !termsAccepted || isLoading;
 
   return (
     <div className="space-y-4">
@@ -68,7 +62,6 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
         />
         <Label htmlFor="terms">I accept the Terms & Conditions</Label>
       </div>
-      <Captcha onChange={setCaptchaToken} />
       <Button onClick={handleDownload} disabled={isButtonDisabled} className="w-full">
         {isLoading ? 'Generating...' : 'Confirm & Download'}
       </Button>

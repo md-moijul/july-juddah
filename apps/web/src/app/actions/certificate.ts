@@ -15,7 +15,6 @@ export async function createCertificate(
     name: string,
     town: string,
     phone: string,
-    captchaToken: string
 ): Promise<ActionResult> {
     // Input validation
     if (!name || name.trim() === '') {
@@ -27,20 +26,6 @@ export async function createCertificate(
     // Basic phone number validation (e.g., check if it's not empty and contains only digits)
     if (!phone || !/^[0-9]+$/.test(phone)) {
         return { success: false, error: 'Valid phone number is required.' };
-    }
-
-    // Verify CAPTCHA
-    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
-    const response = await fetch(
-        `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${captchaToken}`,
-        {
-            method: "POST",
-        }
-    );
-    const data = await response.json();
-
-    if (!data.success) {
-        return { success: false, error: "CAPTCHA verification failed." };
     }
 
     // Check if user with phone number already exists
@@ -61,7 +46,6 @@ export async function createCertificate(
             name,
             town,
             phone,
-            certificateNumber,
         });
         return { success: true, certificateNumber };
     } catch (_) {
