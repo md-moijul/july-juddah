@@ -18,6 +18,8 @@ const customJestConfig = {
     '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
     '^@/data/(.*)$': '<rootDir>/src/data/$1',
     '^@/db': '<rootDir>/src/db',
+    '^@/services/(.*)$': '<rootDir>/src/services/$1',
+    '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
   },
 }
 
