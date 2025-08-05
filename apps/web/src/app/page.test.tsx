@@ -65,7 +65,7 @@ jest.mock('@/data/style.json', () => ({
 }));
 
 // Mock the ImageBanner component
-jest.mock('@/components/sections/ImageBanner', () => {
+jest.mock('@/components/ImageBanner', () => {
   const ImageBanner = ({ className }: { className?: string }) => (
     <div data-testid="mock-image-banner" className={className}>
       <Image src="/mock-image.jpg" alt="Mock Image" width={500} height={300} />
@@ -76,19 +76,19 @@ jest.mock('@/components/sections/ImageBanner', () => {
 });
 
 // Mock other section components
-jest.mock('@/components/sections/counter-section', () => {
+jest.mock('@/components/CounterSection', () => {
   const CounterSection = () => <div data-testid="mock-counter-section">Counter Section</div>;
   CounterSection.displayName = 'CounterSection';
   return CounterSection;
 });
 
-jest.mock('@/components/sections/features-section', () => {
+jest.mock('@/components/FeaturesSection', () => {
   const FeaturesSection = () => <div data-testid="mock-features-section">Features Section</div>;
   FeaturesSection.displayName = 'FeaturesSection';
   return FeaturesSection;
 });
 
-jest.mock('@/components/sections/hero-section', () => {
+jest.mock('@/components/HeroSection', () => {
   const HeroSection = () => <div data-testid="mock-hero-section">Hero Section</div>;
   HeroSection.displayName = 'HeroSection';
   return HeroSection;

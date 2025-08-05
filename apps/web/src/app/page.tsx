@@ -1,11 +1,11 @@
 import content from '@/data/content.json';
-import FeaturesSection from '@/components/sections/features-section';
-import HeroSection from '@/components/sections/hero-section';
-import ImageBanner from '@/components/sections/image-banner';
-import CounterSection from '@/components/sections/counter-section';
-import DisclaimerSection from '@/components/sections/disclaimer-section';
-import PremiumItemsSection from '@/components/sections/premium-items-section';
-import FinalCtaSection from '@/components/sections/final-cta-section';
+import FeaturesSection from '@/components/FeaturesSection';
+import HeroSection from '@/components/HeroSection';
+import ImageBanner from '@/components/ImageBanner';
+import CounterSection from '@/components/CounterSection';
+import DisclaimerSection from '@/components/DisclaimerSection';
+import PremiumItemsSection from '@/components/PremiumItemsSection';
+import FinalCtaSection from '@/components/FinalCtaSection';
 
 export default function LandingPage() {
   const { image_banner_section } = content;

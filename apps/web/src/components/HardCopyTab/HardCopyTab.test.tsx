@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { HardCopyTab } from './HardCopyTab';
+import { HardCopyTab } from './index';
 
 describe('HardCopyTab', () => {
   const defaultProps = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import CounterSection from './counter-section';
+import CounterSection from './index';
 import { content } from '@/lib/content';
 
 describe('CounterSection', () => {

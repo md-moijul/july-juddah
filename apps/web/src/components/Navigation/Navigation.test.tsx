@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Navigation from './navigation';
+import Navigation from '@/components/Navigation';
 import { content } from '@/lib/content';
 
 // Mock Next.js Link component
@@ -13,7 +13,7 @@ jest.mock('next/link', () => {
 });
 
 // Mock the Button component from shadcn/ui
-jest.mock('@/components/ui/button', () => ({
+jest.mock('@/components/Button', () => ({
   Button: ({ children, ...props }: React.ComponentPropsWithoutRef<'button'>) => (
     <button {...props}>{children}</button>
   ),

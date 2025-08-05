@@ -90,7 +90,7 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
                 top: '510px',
                 fontSize: '16px',
                 color: '#000000',
-                fontFamily: 'monospace', // Placeholder for Courier
+                
               }}
             >
               {maskedCertificateNumber}

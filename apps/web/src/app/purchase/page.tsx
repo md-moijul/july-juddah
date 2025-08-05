@@ -103,7 +103,7 @@ const PurchaseFlow = () => {
   );
 };
 
-// The main page export is now a simple component that wraps the client logic in a Suspense boundary.
+
 export default function PurchasePage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>

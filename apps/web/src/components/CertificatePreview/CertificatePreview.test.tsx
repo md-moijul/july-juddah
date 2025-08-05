@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { CertificatePreview } from "./certificate-preview";
+import { CertificatePreview } from './index';
 
 describe("CertificatePreview", () => {
   it("renders correctly with provided full name and location", () => {

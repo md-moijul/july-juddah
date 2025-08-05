@@ -1,6 +1,6 @@
 
 import { render, screen } from '@testing-library/react';
-import FeaturesSection from './features-section';
+import FeaturesSection from './index';
 import { content } from '@/lib/content';
 import { ImageProps } from 'next/image';
 

@@ -2,9 +2,9 @@
 
 import { useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {HardCopyTab} from "@/components/sections/HardCopyTab";
+import {HardCopyTab} from "@/components/HardCopyTab";
 import { CertificateForm } from "@/components/CertificateForm";
-import { CertificatePreview } from "@/components/certificate-preview";
+import { CertificatePreview } from "@/components/CertificatePreview";
 import EcertificateTab from "@/components/EcertificateTab";
 
 export default function GeneratePage() {

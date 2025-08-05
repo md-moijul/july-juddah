@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { createCertificate } from '@/app/actions/certificate';
-import { Captcha } from './Captcha';
+import { Captcha } from '@/components/Captcha';
 
 interface EcertificateTabProps {
   name: string;
