@@ -23,7 +23,7 @@ export default function GeneratePage() {
         phone={phone} 
         setPhone={setPhone} 
       />
-      <CertificatePreview fullName={fullName} location={selectedDistrict} />
+      <CertificatePreview fullName={fullName} location={selectedDistrict} userId="000036**"/>
       <Tabs defaultValue="e-certificate" className="w-[800px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="e-certificate">Download E-certificate</TabsTrigger>

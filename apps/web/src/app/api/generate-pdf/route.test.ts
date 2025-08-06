@@ -2,9 +2,9 @@ import { POST } from './route';
 import { NextRequest } from 'next/server';
 import { PDFDocument } from 'pdf-lib';
 
-// Mock certificateUtils to ensure a consistent certificate number
-jest.mock('@/lib/certificateUtils', () => ({
-    generateUniqueCertificateNumber: jest.fn().mockResolvedValue('12345678'),
+// Mock userUtils to ensure a consistent user ID
+jest.mock('@/lib/userUtils', () => ({
+    generateUniqueUserId: jest.fn().mockResolvedValue('12345678'),
 }));
 
 // Mock Next.js server functions correctly

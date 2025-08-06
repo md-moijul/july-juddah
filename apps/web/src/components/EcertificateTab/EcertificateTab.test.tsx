@@ -8,7 +8,7 @@ import EcertificateTab from './index';
 
 // Mock the createUser action (still needed by the component)
 jest.mock('@/app/actions/user', () => ({
-  createUser: jest.fn(),
+  createUser: jest.fn().mockResolvedValue({ success: true, userId: '12345' }),
 }));
 
 

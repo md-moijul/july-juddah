@@ -16,6 +16,7 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const handleDownload = async () => {
     setIsLoading(true);
@@ -25,17 +26,31 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
     setIsLoading(false);
 
     if (result.success) {
-      const response = await fetch(`/api/certificate/${result.userId}`);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'e-certificate.pdf');
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode?.removeChild(link);
+      setUserId(result?.userId?.toString()??'0000032**');
+      console.log(result.userId);
+      const response = await fetch(`/api/generate-pdf`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fullName: name, location: town, userId: result.userId }),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'e-certificate.pdf');
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode?.removeChild(link);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to generate PDF');
+      }
     } else {
-      setError(result.error??'');
+      setError(result.error ?? '');
     }
   };
 

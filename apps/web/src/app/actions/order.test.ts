@@ -48,7 +48,7 @@ describe('createOrder', () => {
             phone: '1234567890',
             shippingAddress: '123 Main St',
         };
-        const existingUser = { id: 1, name: 'John Doe', town: 'Anytown', phone: '1234567890', certificateNumber: 'abc' };
+        const existingUser = { id: 1, name: 'John Doe', town: 'Anytown', phone: '1234567890' };
 
         mockFindFirst.mockResolvedValueOnce(existingUser);
         mockValues.mockResolvedValueOnce({}); // For the orders insert

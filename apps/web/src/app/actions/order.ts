@@ -20,9 +20,7 @@ export async function createOrder(formData: {
                 await db
                     .insert(users)
                     .values({
-                        // certificateNumber is required, but we don't have it here.
-                        // This will be a problem.
-                        // For now, I'll use a placeholder.
+                        
                         name: formData.name,
                         town: formData.town,
                         phone: formData.phone,

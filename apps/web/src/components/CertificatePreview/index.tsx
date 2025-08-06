@@ -8,11 +8,13 @@ import Image from 'next/image'
 interface CertificatePreviewProps {
   fullName: string;
   location: string;
+  userId: string;
 }
 
 export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
   fullName,
   location,
+  userId,
 }) => {
   return (
     <div className="relative w-[800px] h-[600px] border-2 border-border flex items-center justify-center bg-card shadow-lg overflow-hidden max-xs:scale-30 max-sm:scale-40 max-md:scale-50 ">
@@ -74,14 +76,7 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
           );
         })()}
 
-        {/* Certificate Number */}
         {(() => {
-          const generateMaskedCertificateNumber = () => {
-            const randomNumber = Math.floor(Math.random() * 10000000000).toString().padStart(10, '0');
-            return randomNumber.slice(0, -2) + '**';
-          };
-          const maskedCertificateNumber = generateMaskedCertificateNumber();
-
           return (
             <p
               style={{
@@ -93,7 +88,7 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
                 
               }}
             >
-              {maskedCertificateNumber}
+              {userId}
             </p>
           );
         })()}

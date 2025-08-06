@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import { generateUniqueCertificateNumber } from '@/lib/certificateUtils';
+import { generateUniqueUserId } from '@/lib/userUtils';
 
 export async function POST(req: NextRequest) {
     try {
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         const fontMonospace = await pdfDoc.embedFont(StandardFonts.Courier);
 
         // Generate unique certificate number
-        const certificateNumber = await generateUniqueCertificateNumber();
+        const userId = await generateUniqueUserId();
 
         // Draw dynamic text onto the PDF
         // User's Name
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Certificate Number
-        firstPage.drawText(certificateNumber, {
+        firstPage.drawText(userId, {
             x: 140,
             y: 180,
             font: fontMonospace,
