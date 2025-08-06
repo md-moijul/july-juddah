@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { createCertificate } from '@/app/actions/certificate';
+import { createUser } from '@/app/actions/user';
 
 interface EcertificateTabProps {
   name: string;
@@ -21,11 +21,11 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
     setIsLoading(true);
     setError(null);
 
-    const result = await createCertificate(name, town, phone);
+    const result = await createUser(name, town, phone);
     setIsLoading(false);
 
     if (result.success) {
-      const response = await fetch(`/api/certificate/${result.certificateNumber}`);
+      const response = await fetch(`/api/certificate/${result.userId}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');

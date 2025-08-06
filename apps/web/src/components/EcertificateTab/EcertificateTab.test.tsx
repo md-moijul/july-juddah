@@ -6,9 +6,9 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import EcertificateTab from './index';
 
-// Mock the createCertificate action (still needed by the component)
-jest.mock('@/app/actions/certificate', () => ({
-  createCertificate: jest.fn(),
+// Mock the createUser action (still needed by the component)
+jest.mock('@/app/actions/user', () => ({
+  createUser: jest.fn(),
 }));
 
 
