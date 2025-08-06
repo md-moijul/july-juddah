@@ -1,39 +1,63 @@
 "use client";
 
-import { useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {HardCopyTab} from "@/components/HardCopyTab";
+import { HardCopyTab } from "@/components/HardCopyTab";
 import { CertificateForm } from "@/components/CertificateForm";
 import { CertificatePreview } from "@/components/CertificatePreview";
 import EcertificateTab from "@/components/EcertificateTab";
+import { UserDataProvider, useUser } from "@/context/UserDataContext";
+import { useEffect } from "react";
 
 export default function GeneratePage() {
-  const [fullName, setFullName] = useLocalStorageState("fullName", "");
-  const [selectedDistrict, setSelectedDistrict] = useLocalStorageState("selectedDistrict", "");
-  const [phone, setPhone] = useLocalStorageState("phone", "");
+  return (
+    <UserDataProvider>
+      <GeneratePageContent />
+    </UserDataProvider>
+  );
+}
+
+function GeneratePageContent() {
+  const { user, isLoading, setUser } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      // Pre-populate form fields if user data exists
+      // This will be handled by the CertificateForm component directly now
+    }
+  }, [user]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen py-2 lg:gap-8">
+        <h1 className="text-4xl font-bold mb-8">Loading User Data...</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 lg:gap-8">
       <h1 className="text-4xl font-bold mb-8">Generate Your Certificate</h1>
-      <CertificateForm 
-        fullName={fullName} 
-        setFullName={setFullName} 
-        selectedDistrict={selectedDistrict} 
-        setSelectedDistrict={setSelectedDistrict} 
-        phone={phone} 
-        setPhone={setPhone} 
+      <CertificateForm
+        initialFullName={user?.name || ""}
+        initialSelectedDistrict={user?.town || ""}
+        initialPhone={user?.phone || ""}
+        onUserCreated={(newUserId) => {
+          localStorage.setItem("userId", newUserId);
+          // Optionally refetch user data to update context with full user object
+          // This is handled by the UserDataProvider's useEffect on subsequent loads
+        }}
       />
-      <CertificatePreview fullName={fullName} location={selectedDistrict} userId="000036**"/>
+      <CertificatePreview fullName={user?.name || ""} location={user?.town || ""} userId={user?.id || ""} />
       <Tabs defaultValue="e-certificate" className="w-[800px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="e-certificate">Download E-certificate</TabsTrigger>
           <TabsTrigger value="hard-copy">Order Hard Copy</TabsTrigger>
         </TabsList>
         <TabsContent value="e-certificate">
-          <EcertificateTab name={fullName} town={selectedDistrict} />
+          <EcertificateTab name={user?.name || ""} town={user?.town || ""} />
         </TabsContent>
         <TabsContent value="hard-copy">
-          <HardCopyTab name={fullName} town={selectedDistrict} phone={phone} />
+          <HardCopyTab name={user?.name || ""} town={user?.town || ""} phone={user?.phone || ""} />
         </TabsContent>
       </Tabs>
     </div>

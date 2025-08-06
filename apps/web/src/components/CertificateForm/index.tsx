@@ -10,17 +10,51 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import districts from "@/data/districts.json";
+import { useState, useEffect } from "react";
+import { createUser } from "@/app/actions/user";
+import { useUser } from "@/context/UserDataContext";
 
 interface CertificateFormProps {
-  fullName: string;
-  setFullName: (value: string) => void;
-  selectedDistrict: string;
-  setSelectedDistrict: (value: string) => void;
-  phone: string;
-  setPhone: (value: string) => void;
+  initialFullName: string;
+  initialSelectedDistrict: string;
+  initialPhone: string;
+  onUserCreated: (userId: string) => void;
 }
 
-export function CertificateForm({ fullName, setFullName, selectedDistrict, setSelectedDistrict, phone, setPhone }: CertificateFormProps) {
+export function CertificateForm({
+  initialFullName,
+  initialSelectedDistrict,
+  initialPhone,
+  onUserCreated,
+}: CertificateFormProps) {
+  const [fullName, setFullName] = useState(initialFullName);
+  const [selectedDistrict, setSelectedDistrict] = useState(initialSelectedDistrict);
+  const [phone, setPhone] = useState(initialPhone);
+  const { setUser } = useUser();
+
+  useEffect(() => {
+    setFullName(initialFullName);
+  }, [initialFullName]);
+
+  useEffect(() => {
+    setSelectedDistrict(initialSelectedDistrict);
+  }, [initialSelectedDistrict]);
+
+  useEffect(() => {
+    setPhone(initialPhone);
+  }, [initialPhone]);
+
+  const handleCreateUser = async () => {
+    const result = await createUser(fullName, selectedDistrict, phone);
+    if (result.success && result.userId) {
+      onUserCreated(result.userId.toString());
+      setUser({ id: result.userId.toString(), name: fullName, town: selectedDistrict, phone: phone });
+    } else {
+      // Handle error, e.g., show a toast message
+      console.error(result.error);
+    }
+  };
+
   return (
     <div className="w-full max-w-md space-y-4">
       <div>
@@ -66,6 +100,7 @@ export function CertificateForm({ fullName, setFullName, selectedDistrict, setSe
           </SelectContent>
         </Select>
       </div>
+      <button onClick={handleCreateUser}>Save User</button>
     </div>
   );
 }

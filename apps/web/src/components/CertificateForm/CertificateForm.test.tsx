@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CertificateForm } from '@/components/CertificateForm';
 import React from 'react';
+import { UserDataProvider } from '@/context/UserDataContext';
 
 // Mock the Select component from shadcn/ui
 jest.mock('@/components/ui/select', () => {
@@ -28,17 +29,21 @@ jest.mock('@/components/ui/select', () => {
   return { Select, SelectContent, SelectItem, SelectTrigger, SelectValue };
 });
 
-function TestWrapper() {
-  const [fullName, setFullName] = React.useState('');
-  const [selectedDistrict, setSelectedDistrict] = React.useState('');
-
+function TestWrapper({
+  initialFullName = '',
+  initialSelectedDistrict = '',
+  initialPhone = '',
+  onUserCreated = () => {},
+}) {
   return (
-    <CertificateForm
-      fullName={fullName}
-      setFullName={setFullName}
-      selectedDistrict={selectedDistrict}
-      setSelectedDistrict={setSelectedDistrict}
-    />
+    <UserDataProvider>
+      <CertificateForm
+        initialFullName={initialFullName}
+        initialSelectedDistrict={initialSelectedDistrict}
+        initialPhone={initialPhone}
+        onUserCreated={onUserCreated}
+      />
+    </UserDataProvider>
   );
 }
 

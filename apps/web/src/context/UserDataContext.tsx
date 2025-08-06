@@ -1,75 +1,67 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+"use client";
 
-/**
- * @interface User
- * @description Defines the structure of a user object.
- */
-export interface User {
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { getUserById } from "@/app/actions/user";
+
+interface User {
   id: string;
   name: string;
   town: string;
   phone: string;
 }
 
-/**
- * @interface UserDataContextType
- * @description Defines the shape of the User Data Context.
- */
-interface UserDataContextType {
+interface UserContextType {
   user: User | null;
-  loading: boolean;
   setUser: (user: User | null) => void;
+  isLoading: boolean;
 }
 
-/**
- * @constant UserDataContext
- * @description React Context for managing user data.
- */
-export const UserDataContext = createContext<UserDataContextType | undefined>(undefined);
+const UserDataContext = createContext<UserContextType | undefined>(undefined);
 
-/**
- * @interface UserDataProviderProps
- * @description Props for the UserDataProvider component.
- */
-interface UserDataProviderProps {
-  children: ReactNode;
-}
-
-/**
- * @function UserDataProvider
- * @description Provides user data and loading state to its children components.
- * @param {UserDataProviderProps} { children }
- */
-export const UserDataProvider: React.FC<UserDataProviderProps> = ({ children }) => {
+export const UserDataProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Initial loading state
+  const [isLoading, setIsLoading] = useState(true);
 
-  // In a real application, you would fetch user data here
-  // For now, we'll just set loading to false after a short delay
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 100); // Simulate a network request
-    return () => clearTimeout(timer);
+  useEffect(() => {
+    const loadUser = async () => {
+      setIsLoading(true);
+      const storedUserId = localStorage.getItem("userId");
+      if (storedUserId) {
+        const fetchedUser = await getUserById(storedUserId);
+        if (fetchedUser) {
+          const validatedUser: User = {
+            id: String(fetchedUser.id), 
+            name: fetchedUser.name,
+            town: fetchedUser.town || "", 
+            phone: fetchedUser.phone || "", 
+          };
+          setUser(validatedUser);
+        } else {
+          localStorage.removeItem("userId"); // Clear invalid userId
+        }
+      }
+      setIsLoading(false);
+    };
+    loadUser();
   }, []);
 
   return (
-    <UserDataContext.Provider value={{ user, loading, setUser }}>
+    <UserDataContext.Provider value={{ user, setUser, isLoading }}>
       {children}
     </UserDataContext.Provider>
   );
 };
 
-/**
- * @function useUser
- * @description Custom hook for consuming the UserDataContext.
- * @returns {UserDataContextType} The user data context.
- * @throws {Error} If used outside of a UserDataProvider.
- */
-export const useUser = (): UserDataContextType => {
+export const useUser = () => {
   const context = useContext(UserDataContext);
   if (context === undefined) {
-    throw new Error('useUser must be used within a UserDataProvider');
+    throw new Error("useUser must be used within a UserDataProvider");
   }
   return context;
 };
