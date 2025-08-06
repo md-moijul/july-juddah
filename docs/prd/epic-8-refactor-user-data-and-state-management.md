@@ -32,3 +32,19 @@
 ### Story 3: Integrate UserDataContext on Generate Page
 *   **Description:** Integrate the new context and data flow into the `/generate` page, refactoring form components and data fetching logic.
 *   **File:** `docs/stories/8.3.story.md`
+
+### Story 4: Refactor CertificateForm Component
+*   **Description:** Simplify the `CertificateForm` to only handle name and district, removing all other logic.
+*   **File:** `docs/stories/8.4.story.md`
+
+### Story 5: Implement E-Certificate User Creation Flow
+*   **Description:** Implement the full user creation and download logic for the "E-certificate" tab.
+*   **File:** `docs/stories/8.5.story.md`
+
+### Story 6: Backend - Create createOrder Server Action
+*   **Description:** Create the backend Server Action to handle the hard copy order logic, including finding or creating a user.
+*   **File:** `docs/stories/8.6.story.md`
+
+### Story 7: Implement Hard Copy Order Flow
+*   **Description:** Implement the UI and client-side logic for the "Order Hard Copy" tab.
+*   **File:** `docs/stories/8.7.story.md`
