@@ -59,3 +59,15 @@ export async function createUser(
         return { success: false, error: 'Failed to create user due to a server error.' };
     }
 }
+
+export async function getUserById(userId: string) {
+    try {
+        const user = await db.query.users.findFirst({
+            where: eq(users.id, parseInt(userId)),
+        });
+        return user || null;
+    } catch (error) {
+        console.error("Error fetching user by ID:", error);
+        return null;
+    }
+}
