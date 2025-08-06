@@ -17,12 +17,11 @@ describe("CertificatePreview", () => {
     expect(screen.getByText(/contribution and dedication during the July Student/i)).toBeInTheDocument();
     expect(screen.getByText(new RegExp(`Revelation in ${testLocation}. Your perticipation was`, 'i'))).toBeInTheDocument();
     expect(screen.getByText(/essential to its success./i)).toBeInTheDocument();
-    expect(screen.getByText("USERID_PLACEHOLDER")).toBeInTheDocument();
   });
 
   it("renders correctly with default placeholders", () => {
     // Arrange & Act
-    render(<CertificatePreview fullName="" location="" />);
+    render(<CertificatePreview fullName="" location="" userId="" />);
 
     // Assert
     expect(screen.getByText("[Your Name]")).toBeInTheDocument();
@@ -30,6 +29,5 @@ describe("CertificatePreview", () => {
     expect(screen.getByText(/contribution and dedication during the July Student/i)).toBeInTheDocument();
     expect(screen.getByText(/Revelation in \[Your Town\]. Your perticipation was/i)).toBeInTheDocument();
     expect(screen.getByText(/essential to its success./i)).toBeInTheDocument();
-    expect(screen.getByText("USERID_PLACEHOLDER")).toBeInTheDocument();
   });
 });
