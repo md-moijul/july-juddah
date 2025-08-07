@@ -3,10 +3,25 @@ import userEvent from '@testing-library/user-event';
 import { HardCopyTab } from './index';
 import React from 'react';
 import * as orderActions from '@/app/actions/order';
+import { toast } from 'sonner';
+import { useUserStore } from '@/stores/useUserStore';
 
 // Mock the createOrder action
 jest.mock('@/app/actions/order', () => ({
   createOrder: jest.fn(),
+}));
+
+// Mock sonner for toast notifications
+jest.mock('sonner', () => ({
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
+}));
+
+// Mock useUserStore
+jest.mock('@/stores/useUserStore', () => ({
+  useUserStore: jest.fn(),
 }));
 
 describe('HardCopyTab', () => {
@@ -16,11 +31,18 @@ describe('HardCopyTab', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    (useUserStore as jest.Mock).mockReturnValue({
+      user: {
+        name: mockName,
+        town: mockTown,
+        phone: mockPhone,
+      },
+    });
   });
 
   it('renders correctly with initial values', () => {
     // Arrange & Act
-    render(<HardCopyTab name={mockName} town={mockTown} phone={mockPhone} />);
+    render(<HardCopyTab />);
 
     // Assert
     expect(screen.getByLabelText('Name')).toHaveValue(mockName);
@@ -33,7 +55,7 @@ describe('HardCopyTab', () => {
 
   it('enables the button when all required fields are filled', async () => {
     // Arrange
-    render(<HardCopyTab name={mockName} town={mockTown} phone={mockPhone} />);
+    render(<HardCopyTab />);
     const shippingAddressInput = screen.getByLabelText('Shipping Address');
     const confirmedCheckbox = screen.getByLabelText('I confirm my address is correct');
     const confirmButton = screen.getByRole('button', { name: 'Confirm Order' });
@@ -50,7 +72,7 @@ describe('HardCopyTab', () => {
     // Arrange
     (orderActions.createOrder as jest.Mock).mockResolvedValue({ success: true });
 
-    render(<HardCopyTab name={mockName} town={mockTown} phone={mockPhone} />);
+    render(<HardCopyTab />);
     const shippingAddressInput = screen.getByLabelText('Shipping Address');
     const confirmedCheckbox = screen.getByLabelText('I confirm my address is correct');
     const confirmButton = screen.getByRole('button', { name: 'Confirm Order' });
@@ -63,7 +85,6 @@ describe('HardCopyTab', () => {
 
     // Assert
     expect(confirmButton).toBeDisabled(); // Should be disabled while loading
-    expect(screen.getByText('Confirming...')).toBeInTheDocument();
 
     await waitFor(() => {
       expect(orderActions.createOrder).toHaveBeenCalledWith({
@@ -72,7 +93,9 @@ describe('HardCopyTab', () => {
         phone: mockPhone,
         shippingAddress: '123 Main St',
       });
-      expect(screen.getByText('Order Confirmed!')).toBeInTheDocument();
+      expect(toast.success).toHaveBeenCalledWith('Order Confirmed!', {
+        description: 'Your hard copy order has been placed successfully.',
+      });
     });
   });
 
@@ -84,7 +107,7 @@ describe('HardCopyTab', () => {
       error: { message: errorMessage },
     });
 
-    render(<HardCopyTab name={mockName} town={mockTown} phone={mockPhone} />);
+    render(<HardCopyTab />);
     const shippingAddressInput = screen.getByLabelText('Shipping Address');
     const confirmedCheckbox = screen.getByLabelText('I confirm my address is correct');
     const confirmButton = screen.getByRole('button', { name: 'Confirm Order' });
@@ -98,21 +121,10 @@ describe('HardCopyTab', () => {
     // Assert
     await waitFor(() => {
       expect(orderActions.createOrder).toHaveBeenCalled();
-      expect(screen.getByText(errorMessage)).toBeInTheDocument();
+      expect(toast.error).toHaveBeenCalledWith('Order Failed', {
+        description: errorMessage,
+      });
     });
     expect(screen.getByRole('button', { name: 'Confirm Order' })).toBeEnabled(); // Button should be re-enabled
-  });
-
-  it('updates the town value when changed', async () => {
-    // Arrange
-    render(<HardCopyTab name={mockName} town={mockTown} phone={mockPhone} />);
-    const townInput = screen.getByLabelText('Town');
-
-    // Act
-    await userEvent.clear(townInput);
-    await userEvent.type(townInput, 'NewTown');
-
-    // Assert
-    expect(townInput).toHaveValue('NewTown');
   });
 });

@@ -6,47 +6,45 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from 'sonner';
+import { useUserStore } from '@/stores/useUserStore';
 
-interface HardCopyTabProps {
-  name: string;
-  town: string;
-  phone: string;
-}
 
-export function HardCopyTab({ name, town, phone }: HardCopyTabProps) {
+
+export function HardCopyTab() {
   const [shippingAddress, setShippingAddress] = useState('');
-  const [currentTown, setCurrentTown] = useState(town); // State for town input
   const [confirmed, setConfirmed] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  
+    const { user } = useUserStore();
+    const { name, town, phone } = user;
+
 
   const handleSubmit = async () => {
     setLoading(true);
-    setError(null); // Clear previous errors
     const result = await createOrder({
-      name,
-      town: currentTown, // Use currentTown from state
-      phone,
+      name: name || '',
+      town: town || '',
+      phone: phone || '',
       shippingAddress,
     });
     setLoading(false);
     if (result.success) {
-      setSuccess(true);
+      toast.success('Order Confirmed!', {
+        description: 'Your hard copy order has been placed successfully.',
+      });
     } else {
-      setError(result.error?.message || 'Failed to create order.');
+      toast.error('Order Failed', {
+        description: result.error?.message || 'Failed to create order.',
+      });
     }
   };
 
-  const isFormValid = shippingAddress && confirmed && currentTown; // Include currentTown in validation
-
-  if (success) {
-    return <div className="text-green-500">Order Confirmed!</div>;
-  }
+  const isFormValid = shippingAddress && confirmed;
 
   return (
     <div className="space-y-4 p-4">
-      {error && <div className="text-red-500">{error}</div>}
       <div>
         <Label htmlFor="name">Name</Label>
         <Input id="name" type="text" value={name} readOnly />
@@ -57,20 +55,13 @@ export function HardCopyTab({ name, town, phone }: HardCopyTabProps) {
       </div>
       <div>
         <Label htmlFor="town">Town</Label>
-        <Input
-          id="town"
-          type="text"
-          placeholder="Town"
-          value={currentTown}
-          onChange={(e) => setCurrentTown(e.target.value)}
-        />
+        <Input id="town" type="text" value={town} readOnly />
       </div>
       <div>
         <Label htmlFor="shippingAddress">Shipping Address</Label>
-        <Input
+        <Textarea
           id="shippingAddress"
-          type="text"
-          placeholder="Shipping Address"
+          placeholder="Enter your shipping address"
           value={shippingAddress}
           onChange={(e) => setShippingAddress(e.target.value)}
         />

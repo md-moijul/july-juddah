@@ -61,7 +61,7 @@ function GeneratePageContent() {
           <EcertificateTab />
         </TabsContent>
         <TabsContent value="hard-copy">
-          <HardCopyTab name={user?.name || ""} town={user?.town || ""} phone={user?.phone || ""} />
+          <HardCopyTab />
         </TabsContent>
       </Tabs>
     </div>
