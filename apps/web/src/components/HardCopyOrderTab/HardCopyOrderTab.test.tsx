@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { HardCopyTab } from './index';
+import { HardCopyOrderTab } from './index';
 import React from 'react';
 import * as orderActions from '@/app/actions/order';
 import { toast } from 'sonner';
@@ -24,29 +24,29 @@ jest.mock('@/stores/useUserStore', () => ({
   useUserStore: jest.fn(),
 }));
 
-describe('HardCopyTab', () => {
+describe('HardCopyOrderTab', () => {
   const mockName = 'John Doe';
   const mockTown = 'Exampleville';
   const mockPhone = '1234567890';
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (useUserStore as jest.Mock).mockReturnValue({
+        (useUserStore as jest.Mock).mockReturnValue({
       user: {
         name: mockName,
         town: mockTown,
         phone: mockPhone,
       },
+      setUserPhone: jest.fn(),
     });
   });
 
   it('renders correctly with initial values', () => {
     // Arrange & Act
-    render(<HardCopyTab />);
+    render(<HardCopyOrderTab />);
 
     // Assert
     expect(screen.getByLabelText('Name')).toHaveValue(mockName);
-    expect(screen.getByLabelText('Phone Number')).toHaveValue(mockPhone);
     expect(screen.getByLabelText('Town')).toHaveValue(mockTown);
     expect(screen.getByLabelText('Shipping Address')).toHaveValue('');
     expect(screen.getByLabelText('I confirm my address is correct')).not.toBeChecked();
@@ -55,7 +55,7 @@ describe('HardCopyTab', () => {
 
   it('enables the button when all required fields are filled', async () => {
     // Arrange
-    render(<HardCopyTab />);
+    render(<HardCopyOrderTab />);
     const shippingAddressInput = screen.getByLabelText('Shipping Address');
     const confirmedCheckbox = screen.getByLabelText('I confirm my address is correct');
     const confirmButton = screen.getByRole('button', { name: 'Confirm Order' });
@@ -72,7 +72,7 @@ describe('HardCopyTab', () => {
     // Arrange
     (orderActions.createOrder as jest.Mock).mockResolvedValue({ success: true });
 
-    render(<HardCopyTab />);
+    render(<HardCopyOrderTab />);
     const shippingAddressInput = screen.getByLabelText('Shipping Address');
     const confirmedCheckbox = screen.getByLabelText('I confirm my address is correct');
     const confirmButton = screen.getByRole('button', { name: 'Confirm Order' });
@@ -107,7 +107,7 @@ describe('HardCopyTab', () => {
       error: { message: errorMessage },
     });
 
-    render(<HardCopyTab />);
+    render(<HardCopyOrderTab />);
     const shippingAddressInput = screen.getByLabelText('Shipping Address');
     const confirmedCheckbox = screen.getByLabelText('I confirm my address is correct');
     const confirmButton = screen.getByRole('button', { name: 'Confirm Order' });

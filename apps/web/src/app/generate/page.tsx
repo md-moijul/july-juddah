@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { HardCopyTab } from "@/components/HardCopyTab";
+import { HardCopyOrderTab } from "@/components/HardCopyOrderTab";
 import { CertificateForm } from "@/components/CertificateForm";
 import { CertificatePreview } from "@/components/CertificatePreview";
 import EcertificateTab from "@/components/EcertificateTab";
@@ -61,7 +61,7 @@ function GeneratePageContent() {
           <EcertificateTab />
         </TabsContent>
         <TabsContent value="hard-copy">
-          <HardCopyTab />
+          <HardCopyOrderTab />
         </TabsContent>
       </Tabs>
     </div>

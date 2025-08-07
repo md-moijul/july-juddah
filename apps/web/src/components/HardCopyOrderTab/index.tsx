@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createOrder } from '@/app/actions/order';
 import { Input } from '@/components/ui/input';
+import { PhoneNumberInput } from '@/components/PhoneNumberInput';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -12,17 +13,21 @@ import { useUserStore } from '@/stores/useUserStore';
 
 
 
-export function HardCopyTab() {
+export function HardCopyOrderTab() {
   const [shippingAddress, setShippingAddress] = useState('');
   const [confirmed, setConfirmed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
-    const { user } = useUserStore();
-    const { name, town, phone } = user;
-
+  const { user } = useUserStore();
+  const { name, town, phone } = user;
 
   const handleSubmit = async () => {
     setLoading(true);
+    if (error) {
+      setLoading(false);
+      return;
+    }
     const result = await createOrder({
       name: name || '',
       town: town || '',
@@ -41,7 +46,7 @@ export function HardCopyTab() {
     }
   };
 
-  const isFormValid = shippingAddress && confirmed;
+  const isFormValid = shippingAddress && confirmed && !error;
 
   return (
     <div className="space-y-4 p-4">
@@ -49,10 +54,7 @@ export function HardCopyTab() {
         <Label htmlFor="name">Name</Label>
         <Input id="name" type="text" value={name} readOnly />
       </div>
-      <div>
-        <Label htmlFor="phone">Phone Number</Label>
-        <Input id="phone" type="tel" value={phone} readOnly />
-      </div>
+      <PhoneNumberInput setError={setError} />
       <div>
         <Label htmlFor="town">Town</Label>
         <Input id="town" type="text" value={town} readOnly />
