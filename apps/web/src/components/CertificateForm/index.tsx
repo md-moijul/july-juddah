@@ -10,50 +10,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import districts from "@/data/districts.json";
-import { useState, useEffect } from "react";
-import { createUser } from "@/app/actions/user";
 import { useUserStore } from "@/stores/useUserStore";
 
-interface CertificateFormProps {
-  initialFullName: string;
-  initialSelectedDistrict: string;
-  initialPhone: string;
-  onUserCreated: (user: { id: string; name: string; town: string; phone: string }) => void;
-}
+export function CertificateForm() {
+  const { user, setUserName, setUserTown } = useUserStore();
 
-export function CertificateForm({
-  initialFullName,
-  initialSelectedDistrict,
-  initialPhone,
-  onUserCreated,
-}: CertificateFormProps) {
-  const [fullName, setFullName] = useState(initialFullName);
-  const [selectedDistrict, setSelectedDistrict] = useState(initialSelectedDistrict);
-  const [phone, setPhone] = useState(initialPhone);
-  const { setUser } = useUserStore();
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value;
+        setUserName(newName);
+  };
 
-  useEffect(() => {
-    setFullName(initialFullName);
-  }, [initialFullName]);
-
-  useEffect(() => {
-    setSelectedDistrict(initialSelectedDistrict);
-  }, [initialSelectedDistrict]);
-
-  useEffect(() => {
-    setPhone(initialPhone);
-  }, [initialPhone]);
-
-  const handleCreateUser = async () => {
-    const result = await createUser(fullName, selectedDistrict, phone);
-    if (result.success && result.userId) {
-      const newUser = { id: result.userId.toString(), name: fullName, town: selectedDistrict, phone: phone };
-      onUserCreated(newUser);
-      setUser(newUser);
-    } else {
-      // Handle error, e.g., show a toast message
-      console.error(result.error);
-    }
+  const handleDistrictChange = (newDistrict: string) => {
+      setUserTown(newDistrict);
   };
 
   return (
@@ -65,21 +33,8 @@ export function CertificateForm({
         <Input
           id="fullName"
           placeholder="Your Full Name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          className="mt-1"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-          What is your phone number?
-        </label>
-        <Input
-          id="phone"
-          placeholder="Your Phone Number"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          value={user?.name}
+          onChange={handleNameChange}
           className="mt-1"
         />
       </div>
@@ -88,7 +43,7 @@ export function CertificateForm({
         <label htmlFor="districtSelect" className="block text-sm font-medium text-gray-700">
           Select which Town you&apos;ve participated in
         </label>
-        <Select onValueChange={setSelectedDistrict} value={selectedDistrict}>
+        <Select onValueChange={handleDistrictChange} value={user.town}>
           <SelectTrigger id="districtSelect" className="w-full mt-1">
             <SelectValue placeholder="Select a district" />
           </SelectTrigger>
@@ -101,7 +56,6 @@ export function CertificateForm({
           </SelectContent>
         </Select>
       </div>
-      <button onClick={handleCreateUser}>Save User</button>
     </div>
   );
 }

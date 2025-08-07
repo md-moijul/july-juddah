@@ -4,18 +4,13 @@
 import React from "react";
 import { content } from "@/lib/content";
 import Image from 'next/image'
+import { useUserStore } from "@/stores/useUserStore";
 
-interface CertificatePreviewProps {
-  fullName: string;
-  location: string;
-  userId: string;
-}
 
-export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
-  fullName,
-  location,
-  userId,
-}) => {
+
+export const CertificatePreview: React.FC = () => {
+      const { user } = useUserStore();
+    
   return (
     <div className="relative w-[800px] h-[600px] border-2 border-border flex items-center justify-center bg-card shadow-lg overflow-hidden max-xs:scale-30 max-sm:scale-40 max-md:scale-50 ">
       <Image src="/template.jpg" alt="Certificate Template" className="w-full h-full object-cover" fill/>
@@ -32,12 +27,12 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
             fontWeight: 'semibold',
           }}
         >
-          {fullName || content.certificate.fullNamePlaceholder}
+          {user?.name || content.certificate.fullNamePlaceholder}
         </p>
 
         {/* Descriptive Text */}
         {(() => {
-          const descriptiveText = `This certificate acknowledges your outstanding contribution and dedication during the July Student Revelation in ${location || content.certificate.locationPlaceholder}. Your perticipation was essential to its success.`;
+          const descriptiveText = `This certificate acknowledges your outstanding contribution and dedication during the July Student Revelation in ${user.town || content.certificate.locationPlaceholder}. Your perticipation was essential to its success.`;
           const words = descriptiveText.split(' ');
           let currentLine = '';
           const lines: string[] = [];
@@ -88,7 +83,7 @@ export const CertificatePreview: React.FC<CertificatePreviewProps> = ({
                 
               }}
             >
-              {userId}
+              {user.id}
             </p>
           );
         })()}

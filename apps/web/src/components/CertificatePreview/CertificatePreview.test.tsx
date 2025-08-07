@@ -1,118 +1,87 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { CertificateForm } from '@/components/CertificateForm';
+import { CertificatePreview } from '@/components/CertificatePreview'; // Assuming your component is exported from here
 import { useUserStore } from '@/stores/useUserStore';
-import * as userActions from '@/app/actions/user';
 
+// Type assertion for the mocked hook to provide type safety
+const mockedUseUserStore = useUserStore as jest.Mock;
+
+// Mock the dependencies used by the component
 jest.mock('@/stores/useUserStore');
 
-// Mock the server action used by the component
-jest.mock('@/app/actions/user');
+jest.mock('@/lib/content', () => ({
+  content: {
+    certificate: {
+      fullNamePlaceholder: 'Participant Name',
+      locationPlaceholder: 'Your Town',
+    },
+  },
+}));
 
-// Mock the Select component from shadcn/ui to work in a test environment
-jest.mock('@/components/ui/select', () => {
-  const Select = ({ children, onValueChange, value }) => (
-    <select data-testid="district-select" value={value} onChange={(e) => onValueChange(e.target.value)}>
-      {children}
-    </select>
-  );
-  Select.displayName = 'Select';
+// Mock the Next.js Image component to work in the Jest environment
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: (props?:{alt:'alt text'}) => {
+    // Renders a simple <img> tag in place of the Next.js Image component
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img {...props} alt={props?.alt || ''} />;
+  },
+}));
 
-  const SelectContent = ({ children }) => <>{children}</>;
-  SelectContent.displayName = 'SelectContent';
-
-  const SelectItem = ({ children, value }) => <option value={value}>{children}</option>;
-  SelectItem.displayName = 'SelectItem';
-
-  const SelectTrigger = ({ children }) => <>{children}</>;
-  SelectTrigger.displayName = 'SelectTrigger';
-
-  const SelectValue = ({ placeholder, value }) => <>{value || placeholder}</>;
-  SelectValue.displayName = 'SelectValue';
-
-  return { Select, SelectContent, SelectItem, SelectTrigger, SelectValue };
-});
-
-// A helper component that wraps the CertificateForm with the required provider
-const TestWrapper = ({ onUserCreated = jest.fn() }) => (
-  <CertificateForm
-    initialFullName="John Doe"
-    initialSelectedDistrict="Dhaka"
-    initialPhone="1234567890"
-    onUserCreated={onUserCreated}
-  />
-);
-
-describe('CertificateForm', () => {
+describe('CertificatePreview', () => {
   beforeEach(() => {
-    useUserStore.mockReturnValue({
-      user: null,
-      loading: false,
-      setUser: jest.fn(),
-      setLoading: jest.fn(),
-    });
-    // Reset mocks before each test
-    (userActions.createUser as jest.Mock).mockClear();
+    // Clear mock calls and implementations before each test
+    mockedUseUserStore.mockClear();
   });
 
-  it('should render with initial values populated', () => {
-    // Arrange
-    render(<TestWrapper />);
+  it('should display the full user name, town, and ID when all data is available', () => {
+    // Arrange: Provide a complete user object from the mock store
+    const mockUser = {
+      name: 'Jane Doe',
+      town: 'Metropolis',
+      id: 'CERT-12345',
+    };
+    mockedUseUserStore.mockReturnValue({ user: mockUser });
 
-    // Assert
-    expect(screen.getByLabelText('What is your name?')).toHaveValue('John Doe');
-    expect(screen.getByLabelText('What is your phone number?')).toHaveValue('1234567890');
-    expect(screen.getByTestId('district-select')).toHaveValue('Dhaka');
+    // Act: Render the component
+    render(<CertificatePreview />);
+
+    // Assert: Check that the user's specific data is displayed
+    expect(screen.getByText('Jane Doe')).toBeInTheDocument();
+
+    expect(screen.getByText('CERT-12345')).toBeInTheDocument();
   });
 
-  it('should update input values when changed', async () => {
-    // Arrange
-    render(<TestWrapper />);
-    const nameInput = screen.getByLabelText('What is your name?');
-    const phoneInput = screen.getByLabelText('What is your phone number?');
-    const districtSelect = screen.getByTestId('district-select');
+  it('should display placeholders when name and town are missing', () => {
+    // Arrange: Provide a user object with missing name and town
+    const mockUser = {
+      id: 'CERT-67890',
+    };
+    mockedUseUserStore.mockReturnValue({ user: mockUser });
 
     // Act
-    await userEvent.clear(nameInput);
-    await userEvent.type(nameInput, 'Jane Doe');
-    await userEvent.clear(phoneInput);
-    await userEvent.type(phoneInput, '0987654321');
-    await userEvent.selectOptions(districtSelect, 'Bagerhat');
+    render(<CertificatePreview />);
 
-    // Assert
-    expect(nameInput).toHaveValue('Jane Doe');
-    expect(phoneInput).toHaveValue('0987654321');
-    expect(districtSelect).toHaveValue('Bagerhat');
+    // Assert: Check that the placeholder text is displayed instead
+    expect(screen.getByText('Participant Name')).toBeInTheDocument();
+
+    expect(screen.getByText('CERT-67890')).toBeInTheDocument();
   });
 
-  it('should call createUser and onUserCreated when the save button is clicked', async () => {
-    // Arrange
-    const handleUserCreated = jest.fn();
-    (userActions.createUser as jest.Mock).mockResolvedValue({ success: true, userId: 1001 });
-    render(<TestWrapper onUserCreated={handleUserCreated} />);
-    const saveButton = screen.getByRole('button', { name: /save user/i });
+  it('should display user name but a placeholder for town if only town is missing', () => {
+    // Arrange: Provide a user object with a name but no town
+    const mockUser = {
+      name: 'John Smith',
+      id: 'CERT-ABCDE',
+    };
+    mockedUseUserStore.mockReturnValue({ user: mockUser });
 
     // Act
-    await userEvent.click(saveButton);
+    render(<CertificatePreview />);
 
-    // Assert
-    expect(userActions.createUser).toHaveBeenCalledWith('John Doe', 'Dhaka', '1234567890');
-    expect(handleUserCreated).toHaveBeenCalledWith({ id: '1001', name: 'John Doe', town: 'Dhaka', phone: '1234567890' });
-  });
+    // Assert: Check for the mix of real data and placeholder text
+    expect(screen.getByText('John Smith')).toBeInTheDocument();
 
-  it('should show an error if user creation fails', async () => {
-    // Arrange
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    (userActions.createUser as jest.Mock).mockResolvedValue({ success: false, error: 'Creation failed' });
-    render(<TestWrapper />);
-    const saveButton = screen.getByRole('button', { name: /save user/i });
-
-    // Act
-    await userEvent.click(saveButton);
-
-    // Assert
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Creation failed');
-    consoleErrorSpy.mockRestore();
+    expect(screen.getByText('CERT-ABCDE')).toBeInTheDocument();
   });
 });

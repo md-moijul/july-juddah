@@ -27,7 +27,6 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
 
     if (result.success) {
       setUserId(result?.userId?.toString()??'0000032**');
-      console.log(result.userId);
       const response = await fetch(`/api/generate-pdf`, {
         method: 'POST',
         headers: {

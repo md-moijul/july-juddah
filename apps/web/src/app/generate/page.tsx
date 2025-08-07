@@ -50,16 +50,8 @@ function GeneratePageContent() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 lg:gap-8">
       <h1 className="text-4xl font-bold mb-8">Generate Your Certificate</h1>
-      <CertificateForm
-        initialFullName={user?.name || ""}
-        initialSelectedDistrict={user?.town || ""}
-        initialPhone={user?.phone || ""}
-        onUserCreated={(newUser) => {
-          localStorage.setItem("userId", newUser.id);
-          setUser(newUser);
-        }}
-      />
-      <CertificatePreview fullName={user?.name || ""} location={user?.town || ""} userId={user?.id || ""} />
+      <CertificateForm/>
+      <CertificatePreview />
       <Tabs defaultValue="e-certificate" className="w-[800px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="e-certificate">Download E-certificate</TabsTrigger>
