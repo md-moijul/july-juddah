@@ -5,28 +5,67 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { createUser } from '@/app/actions/user';
+import { useUserStore } from '@/stores/useUserStore';
 
-interface EcertificateTabProps {
-  name: string;
-  town: string;
-}
-
-export default function EcertificateTab({ name, town }: EcertificateTabProps) {
-  const [phone, setPhone] = useState('');
+export default function EcertificateTab() {
+  const { user, setUserPhone, setUser } = useUserStore();
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+
+  const { name, town, phone } = user;
+  console.log('phone: ', phone);
+
+  const validatePhone = (phoneNumber: string) => {
+    return null
+    const phoneRegex = /^\d{1,11}$/; // E.164 format
+    if (!phoneRegex.test(phoneNumber)) {
+      return 'Please enter a valid phone number (e.g., +1234567890).';
+    }
+    return null;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPhone = e.target.value;
+    setUserPhone(newPhone);
+    if (newPhone) {
+      setPhoneError(validatePhone(newPhone));
+    } else {
+      setPhoneError(null);
+    }
+  };
 
   const handleDownload = async () => {
-    setIsLoading(true);
     setError(null);
+    const validationError = validatePhone(phone ?? '');
+    if (validationError) {
+      setPhoneError(validationError);
+      return;
+    }
+
+    setIsLoading(true);
+
+
+    if (!name || !town || !phone || !termsAccepted) {
+      setError('Please fill in all required fields and accept the terms.');
+      setIsLoading(false);
+      return;
+    }
 
     const result = await createUser(name, town, phone);
     setIsLoading(false);
-
+    
     if (result.success) {
-      setUserId(result?.userId?.toString()??'0000032**');
+      const newUserData = {
+        id: result.userId?.toString() || '',
+        name: name,
+        town: town,
+        phone: phone,
+      };
+      localStorage.setItem('userId', newUserData.id);
+      setUser(newUserData);
+      
       const response = await fetch(`/api/generate-pdf`, {
         method: 'POST',
         headers: {
@@ -34,7 +73,7 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
         },
         body: JSON.stringify({ fullName: name, location: town, userId: result.userId }),
       });
-
+      
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
@@ -53,7 +92,7 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
     }
   };
 
-  const isButtonDisabled = !phone || !termsAccepted || isLoading;
+  const isButtonDisabled = !phone || !!phoneError || !termsAccepted || isLoading;
 
   return (
     <div className="space-y-4">
@@ -63,9 +102,10 @@ export default function EcertificateTab({ name, town }: EcertificateTabProps) {
           id="phone"
           type="tel"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={handlePhoneChange}
           placeholder="Enter your phone number"
         />
+        {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
         {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
       </div>
       <div className="flex items-center space-x-2">

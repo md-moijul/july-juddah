@@ -58,7 +58,7 @@ function GeneratePageContent() {
           <TabsTrigger value="hard-copy">Order Hard Copy</TabsTrigger>
         </TabsList>
         <TabsContent value="e-certificate">
-          <EcertificateTab name={user?.name || ""} town={user?.town || ""} />
+          <EcertificateTab />
         </TabsContent>
         <TabsContent value="hard-copy">
           <HardCopyTab name={user?.name || ""} town={user?.town || ""} phone={user?.phone || ""} />
