@@ -2,8 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CertificateForm } from '@/components/CertificateForm';
-import { UserDataProvider } from '@/context/UserDataContext';
+import { useUserStore } from '@/stores/useUserStore';
 import * as userActions from '@/app/actions/user';
+
+jest.mock('@/stores/useUserStore');
 
 // Mock the server action used by the component
 jest.mock('@/app/actions/user');
@@ -34,18 +36,22 @@ jest.mock('@/components/ui/select', () => {
 
 // A helper component that wraps the CertificateForm with the required provider
 const TestWrapper = ({ onUserCreated = jest.fn() }) => (
-  <UserDataProvider>
-    <CertificateForm
-      initialFullName="John Doe"
-      initialSelectedDistrict="Dhaka"
-      initialPhone="1234567890"
-      onUserCreated={onUserCreated}
-    />
-  </UserDataProvider>
+  <CertificateForm
+    initialFullName="John Doe"
+    initialSelectedDistrict="Dhaka"
+    initialPhone="1234567890"
+    onUserCreated={onUserCreated}
+  />
 );
 
 describe('CertificateForm', () => {
   beforeEach(() => {
+    useUserStore.mockReturnValue({
+      user: null,
+      loading: false,
+      setUser: jest.fn(),
+      setLoading: jest.fn(),
+    });
     // Reset mocks before each test
     (userActions.createUser as jest.Mock).mockClear();
   });
@@ -92,7 +98,7 @@ describe('CertificateForm', () => {
 
     // Assert
     expect(userActions.createUser).toHaveBeenCalledWith('John Doe', 'Dhaka', '1234567890');
-    expect(handleUserCreated).toHaveBeenCalledWith('1001');
+    expect(handleUserCreated).toHaveBeenCalledWith({ id: '1001', name: 'John Doe', town: 'Dhaka', phone: '1234567890' });
   });
 
   it('should show an error if user creation fails', async () => {

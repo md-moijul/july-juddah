@@ -3,7 +3,9 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CertificateForm } from '@/components/CertificateForm';
 import React from 'react';
-import { UserDataProvider } from '@/context/UserDataContext';
+import { useUserStore } from '@/stores/useUserStore';
+
+jest.mock('@/stores/useUserStore');
 
 // Mock the Select component from shadcn/ui
 jest.mock('@/components/ui/select', () => {
@@ -36,18 +38,24 @@ function TestWrapper({
   onUserCreated = () => {},
 }) {
   return (
-    <UserDataProvider>
-      <CertificateForm
-        initialFullName={initialFullName}
-        initialSelectedDistrict={initialSelectedDistrict}
-        initialPhone={initialPhone}
-        onUserCreated={onUserCreated}
-      />
-    </UserDataProvider>
+    <CertificateForm
+      initialFullName={initialFullName}
+      initialSelectedDistrict={initialSelectedDistrict}
+      initialPhone={initialPhone}
+      onUserCreated={onUserCreated}
+    />
   );
 }
 
 describe('CertificateForm', () => {
+  beforeEach(() => {
+    useUserStore.mockReturnValue({
+      user: null,
+      loading: false,
+      setUser: jest.fn(),
+      setLoading: jest.fn(),
+    });
+  });
   it('should call setFullName when the name input changes', async () => {
     // Arrange
     render(<TestWrapper />);

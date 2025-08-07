@@ -66,7 +66,7 @@ This table is the single source of truth for all technologies, libraries, and to
 | **Frontend Framework** | Next.js | 14.2.3 | The core React framework for the UI and serverless functions. | Provides a production-ready foundation with routing, SSR, and API routes. |
 | **UI Component Library** | **shadcn/ui** | **0.8.0** | Provides accessible, composable components to build the UI. | **(Refined)** An excellent choice that builds on Radix UI and Tailwind CSS, accelerating development while allowing full customization to match the `style.json` design system. |
 | **CSS Framework** | Tailwind CSS | 3.4.3 | A utility-first CSS framework for styling. | The most efficient way to implement the custom `style.json` design system. `shadcn/ui` is built with it. |
-| **State Management** | React Hooks | 18.2.0 | For managing simple form state on the client. | V1.0's state is simple; `useState` is sufficient. Avoids over-engineering. |
+| **State Management** | Zustand | 4.5.2 | For managing simple form state on the client. | V1.0's state is simple; `useState` is sufficient. Avoids over-engineering. |
 | **Backend Language** | TypeScript | 5.4.5 | For the serverless PDF generation function. | Maintains language consistency across the entire stack. |
 | **Backend Framework**| Next.js API Routes | 14.2.3 | To create the serverless function endpoint. | The native, zero-configuration way to build serverless functions in Next.js/Vercel. |
 | **Database** | **N/A for V1.0** | - | - | V1.0 has no data persistence requirement. |
@@ -288,7 +288,7 @@ The `src/components/sections` directory will contain a dedicated component for e
 
 #### State Management Architecture
 
-For V1.0, state will be managed locally within the `generator-view.tsx` component using the standard React `useState` hook to manage the form inputs. Global state management is not required.
+For V1.0, state will be managed using Zustand. Global state management is not required.
 
 #### Routing Architecture
 

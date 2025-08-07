@@ -20,6 +20,7 @@ const customJestConfig = {
     '^@/db': '<rootDir>/src/db',
     '^@/services/(.*)$': '<rootDir>/src/services/$1',
     '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^@/stores/(.*)$': '<rootDir>/src/stores/$1'
   },
 }
 

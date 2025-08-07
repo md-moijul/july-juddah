@@ -5,28 +5,41 @@ import { HardCopyTab } from "@/components/HardCopyTab";
 import { CertificateForm } from "@/components/CertificateForm";
 import { CertificatePreview } from "@/components/CertificatePreview";
 import EcertificateTab from "@/components/EcertificateTab";
-import { UserDataProvider, useUser } from "@/context/UserDataContext";
 import { useEffect } from "react";
+import { getUserById } from "@/app/actions/user";
+import { useUserStore } from "@/stores/useUserStore";
 
 export default function GeneratePage() {
-  return (
-    <UserDataProvider>
-      <GeneratePageContent />
-    </UserDataProvider>
-  );
+  return <GeneratePageContent />;
 }
 
 function GeneratePageContent() {
-  const { user, isLoading, setUser } = useUser();
+  const { user,loading, setUser, setLoading } = useUserStore();
 
   useEffect(() => {
-    if (user) {
-      // Pre-populate form fields if user data exists
-      // This will be handled by the CertificateForm component directly now
-    }
-  }, [user]);
+    const loadUser = async () => {
+      setLoading(true);
+      const storedUserId = localStorage.getItem("userId");
+      if (storedUserId) {
+        const fetchedUser = await getUserById(storedUserId);
+        if (fetchedUser) {
+          const validatedUser = {
+            id: String(fetchedUser.id),
+            name: fetchedUser.name,
+            town: fetchedUser.town || "",
+            phone: fetchedUser.phone || "",
+          };
+          setUser(validatedUser);
+        } else {
+          localStorage.removeItem("userId"); // Clear invalid userId
+        }
+      }
+      setLoading(false);
+    };
+    loadUser();
+  }, [setUser, setLoading]);
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen py-2 lg:gap-8">
         <h1 className="text-4xl font-bold mb-8">Loading User Data...</h1>
@@ -41,10 +54,9 @@ function GeneratePageContent() {
         initialFullName={user?.name || ""}
         initialSelectedDistrict={user?.town || ""}
         initialPhone={user?.phone || ""}
-        onUserCreated={(newUserId) => {
-          localStorage.setItem("userId", newUserId);
-          // Optionally refetch user data to update context with full user object
-          // This is handled by the UserDataProvider's useEffect on subsequent loads
+        onUserCreated={(newUser) => {
+          localStorage.setItem("userId", newUser.id);
+          setUser(newUser);
         }}
       />
       <CertificatePreview fullName={user?.name || ""} location={user?.town || ""} userId={user?.id || ""} />
