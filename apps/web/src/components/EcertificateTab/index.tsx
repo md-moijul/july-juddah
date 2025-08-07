@@ -15,7 +15,6 @@ export default function EcertificateTab() {
   const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const { name, town, phone } = user;
-  console.log('phone: ', phone);
 
   const validatePhone = (phoneNumber: string) => {
     return null

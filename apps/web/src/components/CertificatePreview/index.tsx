@@ -83,7 +83,7 @@ export const CertificatePreview: React.FC = () => {
                 
               }}
             >
-              {user.id}
+              {user.id?? '000000**'}
             </p>
           );
         })()}
