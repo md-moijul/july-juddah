@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { createUser } from '@/app/actions/user';
 import { useUserStore } from '@/stores/useUserStore';
 import { PhoneNumberInput } from '@/components/PhoneNumberInput';
+import { useCertificateDownload } from '@/hooks/useCertificateDownload';
 
 export default function EcertificateTab() {
   const { user, setUser } = useUserStore();
@@ -13,9 +14,14 @@ export default function EcertificateTab() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+
+  const { downloadCertificate } = useCertificateDownload();
+
+
   const { name, town, phone } = user;
 
   const handleDownload = async () => {
+
     setError(null);
     if (error) { // Check if there's an existing error from PhoneNumberInput
       return;
@@ -42,27 +48,9 @@ export default function EcertificateTab() {
       localStorage.setItem('userId', newUserData.id);
       setUser(newUserData);
       
-      const response = await fetch(`/api/generate-pdf`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fullName: name, location: town, userId: result.userId }),
-      });
+      downloadCertificate(user.name, user.town)
       
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'e-certificate.pdf');
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode?.removeChild(link);
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Failed to generate PDF');
-      }
+
     } else {
       setError(result.error ?? '');
     }
@@ -82,7 +70,8 @@ export default function EcertificateTab() {
         />
         <Label htmlFor="terms">I accept the Terms & Conditions</Label>
       </div>
-      <Button onClick={handleDownload} disabled={isButtonDisabled} className="w-full">
+      <Button onClick={()=> downloadCertificate(user.name, user.town)
+} className="w-full">
         {isLoading ? 'Generating...' : 'Confirm & Download'}
       </Button>
     </div>

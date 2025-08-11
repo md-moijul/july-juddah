@@ -1,7 +1,9 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { generateUniqueUserId } from '@/lib/userUtils';
+import path from 'path';
+import fs from 'fs/promises';
+import * as fontkit from 'fontkit';
 
 export async function POST(req: NextRequest) {
     try {
@@ -12,63 +14,56 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Missing fullName or location' }, { status: 400 });
         }
 
-        // Create a new PDF document
+        const fontPath = path.join(process.cwd(), 'assets', 'PinyonScript-Regular.ttf');
+        const templatePath = path.join(process.cwd(), 'assets', 'template.pdf');
+
+        const [existingPdfBytes, kapakanaFontBytes] = await Promise.all([
+            fs.readFile(templatePath),
+            fs.readFile(fontPath),
+        ]);
+
         const pdfDoc = await PDFDocument.create();
 
-        const pages = pdfDoc.addPage();
-        const firstPage = pages;
+        // Register fontkit using a type assertion to resolve the mismatch
+        pdfDoc.registerFontkit(fontkit as never);
 
-        const fontLora = await pdfDoc.embedFont(StandardFonts.TimesRoman); // Using TimesRoman as a placeholder for a more decorative font. For a true cursive font, you would need to provide the font file.
-        const fontInter = await pdfDoc.embedFont(StandardFonts.Helvetica);
-        const fontMonospace = await pdfDoc.embedFont(StandardFonts.Courier);
+        const [templatePage] = await pdfDoc.embedPdf(existingPdfBytes);
+        const page = pdfDoc.addPage([templatePage.width, templatePage.height]);
 
-        // Generate unique certificate number
-        const userId = await generateUniqueUserId();
-
-        // Draw dynamic text onto the PDF
-        // User's Name
-        firstPage.drawText(fullName, {
-            x: 150,
-            y: 800,
-            font: fontLora,
-            size: 80,
-            color: rgb(0.5137, 0.3529, 0.1647), // Converted from hex #835A2A
+        page.drawPage(templatePage, {
+            ...templatePage.size(),
+            x: 0,
+            y: 0,
         });
 
-        // Descriptive text with line breaks and color
+        const kapakanaFont = await pdfDoc.embedFont(kapakanaFontBytes);
+        const fontInter = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const fontMonospace = await pdfDoc.embedFont(StandardFonts.Courier);
+        const userId = await generateUniqueUserId();
+
+        // User's Name (using the new custom font)
+        page.drawText(fullName, {
+            x: 150,
+            y: 800,
+            font: kapakanaFont,
+            size: 120,
+            color: rgb(0.5137, 0.3529, 0.1647),
+        });
+
+        // Descriptive text
         const descriptiveText = `This certificate acknowledges your outstanding contribution and dedication during the July Student Revelation in ${location}. Your perticipation was essential to its success.`;
-
-        const words = descriptiveText.split(' ');
-        let currentLine = '';
-        const lines = [];
-        const breakWords = ["outstanding", "Student", "was"];
-
-        for (let i = 0; i < words.length; i++) {
-            currentLine += words[i] + ' ';
-            if (breakWords.includes(words[i]) || i === words.length - 1) {
-                lines.push(currentLine.trim());
-                currentLine = '';
-            }
-        }
-
-        const textColor = rgb(0.435, 0.416, 0.357); // Converted from hex #6F6A5B
-        const fontSize = 38;
-        const lineHeight = 54; // Approximate line height for 12pt font
-        let currentY = 670; // Starting Y coordinate
-
-        for (const line of lines) {
-            firstPage.drawText(line, {
-                x: 140,
-                y: currentY,
-                font: fontInter,
-                size: fontSize,
-                color: textColor,
-            });
-            currentY -= lineHeight;
-        }
+        page.drawText(descriptiveText, {
+            x: 140,
+            y: 670,
+            font: fontInter,
+            size: 38,
+            color: rgb(0.435, 0.416, 0.357),
+            lineHeight: 54,
+            maxWidth: page.getWidth() - 860,
+        });
 
         // Certificate Number
-        firstPage.drawText(userId, {
+        page.drawText(`Certificate ID: ${userId}`, {
             x: 140,
             y: 180,
             font: fontMonospace,
@@ -85,7 +80,8 @@ export async function POST(req: NextRequest) {
                 'Content-Disposition': `attachment; filename="certificate_${fullName.replace(/ /g, '_')}.pdf"`,
             },
         });
-    } catch (_) {
+    } catch (error) {
+        console.error('Error generating PDF:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
